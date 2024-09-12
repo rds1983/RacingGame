@@ -12,6 +12,7 @@ using Newtonsoft.Json.Linq;
 using RacingGame.Graphics;
 using RacingGame.Shaders;
 using RacingGame.Utility;
+using static glTFLoader.Schema.Accessor;
 using static glTFLoader.Schema.AnimationChannelTarget;
 using Model = Microsoft.Xna.Framework.Graphics.Model;
 
@@ -70,7 +71,7 @@ namespace RacingGame
 
 		private AssetManager _assetManager;
 		private string _assetName;
-		private Gltf _glb;
+		private Gltf _gltf;
 		private readonly Dictionary<int, byte[]> _bufferCache = new Dictionary<int, byte[]>();
 		private readonly List<ModelMesh> _meshes = new List<ModelMesh>();
 		private Model _model;
@@ -100,7 +101,7 @@ namespace RacingGame
 				return result;
 			}
 
-			result = _glb.LoadBinaryBuffer(index, path => FileResolver(path));
+			result = _gltf.LoadBinaryBuffer(index, path => FileResolver(path));
 			_bufferCache[index] = result;
 
 			return result;
@@ -108,7 +109,7 @@ namespace RacingGame
 
 		private ArraySegment<byte> GetBufferView(int bufferViewIndex)
 		{
-			var bufferView = _glb.BufferViews[bufferViewIndex];
+			var bufferView = _gltf.BufferViews[bufferViewIndex];
 			var buffer = GetBuffer(bufferView.Buffer);
 
 			return new ArraySegment<byte>(buffer, bufferView.ByteOffset, bufferView.ByteLength);
@@ -116,13 +117,13 @@ namespace RacingGame
 
 		private ArraySegment<byte> GetAccessorData(int accessorIndex)
 		{
-			var accessor = _glb.Accessors[accessorIndex];
+			var accessor = _gltf.Accessors[accessorIndex];
 			if (accessor.BufferView == null)
 			{
 				throw new NotSupportedException("Accessors without buffer index arent supported");
 			}
 
-			var bufferView = _glb.BufferViews[accessor.BufferView.Value];
+			var bufferView = _gltf.BufferViews[accessor.BufferView.Value];
 			var buffer = GetBuffer(bufferView.Buffer);
 
 			var size = accessor.Type.GetComponentCount() * accessor.ComponentType.GetComponentSize();
@@ -137,7 +138,7 @@ namespace RacingGame
 				throw new NotSupportedException("Only float/Vector3/Vector4 types are supported");
 			}
 
-			var accessor = _glb.Accessors[accessorIndex];
+			var accessor = _gltf.Accessors[accessorIndex];
 			if (accessor.Type == Accessor.TypeEnum.SCALAR && type != typeof(float))
 			{
 				throw new NotSupportedException("Scalar type could be converted only to float");
@@ -182,7 +183,7 @@ namespace RacingGame
 
 		private VertexElementFormat GetAccessorFormat(int index)
 		{
-			var accessor = _glb.Accessors[index];
+			var accessor = _gltf.Accessors[index];
 
 			switch (accessor.Type)
 			{
@@ -236,9 +237,86 @@ namespace RacingGame
 			return CreateTransform(translation, scale, quaternion);
 		}
 
+		private IndexBuffer CreateIndexBuffer(MeshPrimitive primitive)
+		{
+			if (primitive.Indices == null)
+			{
+				throw new NotSupportedException("Meshes without indices arent supported");
+			}
+
+			var indexAccessor = _gltf.Accessors[primitive.Indices.Value];
+			if (indexAccessor.Type != TypeEnum.SCALAR)
+			{
+				throw new NotSupportedException("Only scalar index buffer are supported");
+			}
+
+			if (indexAccessor.ComponentType != ComponentTypeEnum.SHORT &&
+				indexAccessor.ComponentType != ComponentTypeEnum.UNSIGNED_SHORT &&
+				indexAccessor.ComponentType != ComponentTypeEnum.UNSIGNED_INT)
+			{
+				throw new NotSupportedException($"Index of type {indexAccessor.ComponentType} isn't supported");
+			}
+
+			var indexData = GetAccessorData(primitive.Indices.Value);
+
+			var elementSize = (indexAccessor.ComponentType == ComponentTypeEnum.SHORT ||
+				indexAccessor.ComponentType == ComponentTypeEnum.UNSIGNED_SHORT) ?
+				IndexElementSize.SixteenBits : IndexElementSize.ThirtyTwoBits;
+
+			var indexBuffer = new IndexBuffer(BaseGame.Device, elementSize, indexAccessor.Count, BufferUsage.None);
+			indexBuffer.SetData(0, indexData.Array, indexData.Offset, indexData.Count);
+
+			// Since gltf uses ccw winding by default
+			// We need to unwind it
+			if (indexAccessor.ComponentType == ComponentTypeEnum.UNSIGNED_SHORT)
+			{
+				var data = new ushort[indexData.Count / 2];
+				System.Buffer.BlockCopy(indexData.Array, indexData.Offset, data, 0, indexData.Count);
+
+				for (var i = 0; i < data.Length / 3; i++)
+				{
+					var temp = data[i * 3];
+					data[i * 3] = data[i * 3 + 2];
+					data[i * 3 + 2] = temp;
+				}
+
+				indexBuffer.SetData(data);
+			}
+			else if (indexAccessor.ComponentType == ComponentTypeEnum.SHORT)
+			{
+				var data = new short[indexData.Count / 2];
+				System.Buffer.BlockCopy(indexData.Array, indexData.Offset, data, 0, indexData.Count);
+
+				for (var i = 0; i < data.Length / 3; i++)
+				{
+					var temp = data[i * 3];
+					data[i * 3] = data[i * 3 + 2];
+					data[i * 3 + 2] = temp;
+				}
+
+				indexBuffer.SetData(data);
+			}
+			else
+			{
+				var data = new uint[indexData.Count / 4];
+				System.Buffer.BlockCopy(indexData.Array, indexData.Offset, data, 0, indexData.Count);
+
+				for (var i = 0; i < data.Length / 3; i++)
+				{
+					var temp = data[i * 3];
+					data[i * 3] = data[i * 3 + 2];
+					data[i * 3 + 2] = temp;
+				}
+
+				indexBuffer.SetData(data);
+			}
+
+			return indexBuffer;
+		}
+
 		private void LoadMeshes()
 		{
-			foreach (var glbMesh in _glb.Meshes)
+			foreach (var glbMesh in _gltf.Meshes)
 			{
 				var meshes = new List<ModelMeshPart>();
 				var effects = new List<Effect>();
@@ -256,7 +334,7 @@ namespace RacingGame
 					int? vertexCount = null;
 					foreach (var pair in primitive.Attributes)
 					{
-						var accessor = _glb.Accessors[pair.Value];
+						var accessor = _gltf.Accessors[pair.Value];
 						var newVertexCount = accessor.Count;
 						if (vertexCount != null && vertexCount.Value != newVertexCount)
 						{
@@ -357,15 +435,6 @@ namespace RacingGame
 						offset += sz;
 					}
 
-					/*					var vertices = new VertexPositionNormalTexture[vertexCount.Value];
-										unsafe
-										{
-											fixed(VertexPositionNormalTexture *ptr = vertices)
-											{
-												Marshal.Copy(vertexData, 0, new IntPtr(ptr), vertexData.Length);
-											}
-										}*/
-
 					vertexBuffer.SetData(vertexData);
 
 					if (primitive.Indices == null)
@@ -373,7 +442,7 @@ namespace RacingGame
 						throw new NotSupportedException("Meshes without indices arent supported");
 					}
 
-					var indexAccessor = _glb.Accessors[primitive.Indices.Value];
+					var indexAccessor = _gltf.Accessors[primitive.Indices.Value];
 					if (indexAccessor.Type != Accessor.TypeEnum.SCALAR)
 					{
 						throw new NotSupportedException("Only scalar index buffer are supported");
@@ -386,24 +455,19 @@ namespace RacingGame
 						throw new NotSupportedException($"Index of type {indexAccessor.ComponentType} isn't supported");
 					}
 
-					var indexData = GetAccessorData(primitive.Indices.Value);
+					var indexBuffer = CreateIndexBuffer(primitive);
 
-					var elementSize = (indexAccessor.ComponentType == Accessor.ComponentTypeEnum.SHORT ||
-						indexAccessor.ComponentType == Accessor.ComponentTypeEnum.UNSIGNED_SHORT) ?
-						IndexElementSize.SixteenBits : IndexElementSize.ThirtyTwoBits;
-					var indexBuffer = new IndexBuffer(BaseGame.Device, elementSize, indexAccessor.Count, BufferUsage.None);
-					indexBuffer.SetData(0, indexData.Array, indexData.Offset, indexData.Count);
 
 					var effect = ShaderEffect.normalMapping.Effect;
 
 					var mesh = XNA.CreateModelMeshPart();
 					mesh.SetVertexBuffer(vertexBuffer);
 					mesh.SetIndexBuffer(indexBuffer);
-					mesh.SetPrimitiveCount(vertexBuffer.VertexCount / 3);
+					mesh.SetPrimitiveCount(indexBuffer.IndexCount / 3);
 
 					if (primitive.Material != null)
 					{
-						var glbMaterial = _glb.Materials[primitive.Material.Value];
+						var glbMaterial = _gltf.Materials[primitive.Material.Value];
 
 						EffectInfo effectInfo;
 						if (_materialInfo.Effects.TryGetValue(glbMaterial.Name, out effectInfo))
@@ -424,6 +488,9 @@ namespace RacingGame
 					meshes[i].Effect = effects[i];
 				}
 
+				var sphere = BoundingSphere.CreateFromPoints(positions);
+				modelMesh.SetBoundingSphere(sphere);
+
 				_meshes.Add(modelMesh);
 				_allPositions.AddRange(positions);
 			}
@@ -436,7 +503,7 @@ namespace RacingGame
 				return result;
 			}
 
-			var glbSkin = _glb.Skins[skinId];
+			var glbSkin = _gltf.Skins[skinId];
 			if (glbSkin.Joints.Length > MaximumBones)
 			{
 				throw new Exception($"Skin {glbSkin.Name} has {glbSkin.Joints.Length} bones which exceeds maximum {MaximumBones}");
@@ -461,9 +528,9 @@ namespace RacingGame
 		private void LoadAllNodes()
 		{
 			// First run - load all nodes
-			for (var i = 0; i < _glb.Nodes.Length; ++i)
+			for (var i = 0; i < _gltf.Nodes.Length; ++i)
 			{
-				var glbNode = _glb.Nodes[i];
+				var glbNode = _gltf.Nodes[i];
 
 				var modelBone = XNA.CreateModelBone();
 
@@ -494,9 +561,9 @@ namespace RacingGame
 			}
 
 			// Second run - set children and skins
-			for (var i = 0; i < _glb.Nodes.Length; ++i)
+			for (var i = 0; i < _gltf.Nodes.Length; ++i)
 			{
-				var glbNode = _glb.Nodes[i];
+				var glbNode = _gltf.Nodes[i];
 				var modelBone = _allNodes[i];
 
 				if (glbNode.Children != null)
@@ -526,7 +593,7 @@ namespace RacingGame
 			_assetName = assetName;
 			using (var stream = manager.Open(assetName))
 			{
-				_glb = Interface.LoadModel(stream);
+				_gltf = Interface.LoadModel(stream);
 			}
 
 			LoadMeshes();
@@ -535,15 +602,21 @@ namespace RacingGame
 			foreach (var mesh in _meshes)
 			{
 				var effects = _materialInfo.MeshesEffects[mesh.Name];
-				for (var i = 0; i < mesh.MeshParts.Count; ++i)
+				for (var i = 0; i < Math.Min(mesh.MeshParts.Count, effects.Length); ++i)
 				{
+					var name = mesh.Name;
 
+					mesh.MeshParts[i].Effect = effects[i].Effect;
+					mesh.MeshParts[i].Effect.CurrentTechnique = effects[i].Technique;
+					name += effects[i].TechniqueIndex;
+
+					mesh.SetName(name);
 				}
 			}
 
 			_model = XNA.CreateModel(_allNodes, _meshes);
 
-			var scene = _glb.Scenes[_glb.Scene.Value];
+			var scene = _gltf.Scenes[_gltf.Scene.Value];
 			_model.SetRoot(_allNodes[scene.Nodes[0]]);
 
 			return _model;

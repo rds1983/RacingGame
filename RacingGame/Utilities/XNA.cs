@@ -4,6 +4,7 @@ using System.Linq;
 using System.Collections.Generic;
 using RacingGame.Graphics;
 using Model = Microsoft.Xna.Framework.Graphics.Model;
+using Microsoft.Xna.Framework;
 
 namespace RacingGame.Utility
 {
@@ -63,6 +64,11 @@ namespace RacingGame.Utility
 		public static void SetParentBone(this ModelMesh bone, ModelBone parent)
 		{
 			SetProperty(bone, "ParentBone", parent);
+		}
+
+		public static void SetBoundingSphere(this ModelMesh bone, BoundingSphere sphere)
+		{
+			SetProperty(bone, "BoundingSphere", sphere);
 		}
 
 		public static ModelMeshPart CreateModelMeshPart()
