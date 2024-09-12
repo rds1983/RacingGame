@@ -1,198 +1,238 @@
 {
-  "Hotel01": {
-    "Effect": "../shaders/NormalMapping.fx",
-    "Parameters": {
-      "lightDir": 0,
-      "ambientColor": [
-        0.360784,
-        0.360784,
-        0.360784,
-        1
-      ],
-      "diffuseColor": [
-        0.556863,
-        0.556863,
-        0.556863,
-        1
-      ],
-      "specularColor": [
-        0.215686,
-        0.215686,
-        0.215686,
-        1
-      ],
-      "shininess": [
-        32
-      ],
-      "diffuseTexture": "../textures/Hotel01.tga",
-      "normalTexture": "../textures/Hotel01Normal.tga",
-      "reflectionCubeTexture": "../textures/SkyCubeMap.dds",
-      "NormalizeCubeTexture": "../textures/NormalizeCubeMap.dds",
-      "shadowCarColor": [
-        1,
-        1,
-        1,
-        1
-      ],
-      "carHueColorChange": [
-        0
-      ],
-      "technique": 6
+  "Materials": {
+    "Hotel01": {
+      "Effect": "../shaders/NormalMapping.fx",
+      "Technique": "DiffuseSpecular20",
+      "Parameters": {
+        "lightDir": 0,
+        "ambientColor": [
+          0.360784,
+          0.360784,
+          0.360784,
+          1
+        ],
+        "diffuseColor": [
+          0.556863,
+          0.556863,
+          0.556863,
+          1
+        ],
+        "specularColor": [
+          0.215686,
+          0.215686,
+          0.215686,
+          1
+        ],
+        "shininess": [
+          32
+        ],
+        "diffuseTexture": "../textures/Hotel01.tga",
+        "normalTexture": "../textures/Hotel01Normal.tga",
+        "reflectionCubeTexture": "../textures/SkyCubeMap.dds",
+        "NormalizeCubeTexture": "../textures/NormalizeCubeMap.dds",
+        "shadowCarColor": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "carHueColorChange": [
+          0
+        ]
+      }
+    },
+    "Material__39": {
+      "Effect": "../shaders/ReflectionSimpleGlass.fx",
+      "Technique": "ReflectionSpecular20",
+      "Parameters": {
+        "lightDir": 0,
+        "ambientColor": [
+          0.160784,
+          0.160784,
+          0.160784,
+          1
+        ],
+        "diffuseColor": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "specularColor": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "shininess": [
+          16
+        ],
+        "alphaFactor": [
+          1
+        ],
+        "reflectionCubeTexture": "../textures/SkyCubeMap.dds"
+      }
+    },
+    "Hotel01_dach": {
+      "Effect": "../shaders/NormalMapping.fx",
+      "Technique": "DiffuseSpecular20",
+      "Parameters": {
+        "lightDir": 0,
+        "ambientColor": [
+          0.247059,
+          0.247059,
+          0.247059,
+          1
+        ],
+        "diffuseColor": [
+          0.87451,
+          0.87451,
+          0.87451,
+          1
+        ],
+        "specularColor": [
+          0.8,
+          0.8,
+          0.8,
+          1
+        ],
+        "shininess": [
+          45
+        ],
+        "diffuseTexture": "../textures/Hotel01.tga",
+        "normalTexture": "../textures/Hotel01Normal.tga",
+        "reflectionCubeTexture": "../textures/SkyCubeMap.dds",
+        "NormalizeCubeTexture": "../textures/NormalizeCubeMap.dds",
+        "shadowCarColor": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "carHueColorChange": [
+          0
+        ]
+      }
+    },
+    "HotelPoster": {
+      "Effect": "../shaders/NormalMapping.fx",
+      "Technique": "Specular20",
+      "Parameters": {
+        "lightDir": 0,
+        "ambientColor": [
+          0.498039,
+          0.498039,
+          0.498039,
+          1
+        ],
+        "diffuseColor": [
+          0.615686,
+          0.615686,
+          0.615686,
+          1
+        ],
+        "specularColor": [
+          0.780392,
+          0.780392,
+          0.780392,
+          1
+        ],
+        "shininess": [
+          15
+        ],
+        "diffuseTexture": "../textures/Hotel01.tga",
+        "normalTexture": "../textures/Hotel01Normal.tga",
+        "reflectionCubeTexture": "../textures/SkyCubeMap.dds",
+        "NormalizeCubeTexture": "../textures/NormalizeCubeMap.dds",
+        "shadowCarColor": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "carHueColorChange": [
+          0
+        ]
+      }
+    },
+    "plants": {
+      "Effect": "../shaders/NormalMapping.fx",
+      "Technique": "DiffuseSpecular20",
+      "Parameters": {
+        "lightDir": 0,
+        "ambientColor": [
+          0.545098,
+          0.545098,
+          0.545098,
+          1
+        ],
+        "diffuseColor": [
+          0.431373,
+          0.431373,
+          0.431373,
+          1
+        ],
+        "specularColor": [
+          0.992157,
+          0.992157,
+          0.992157,
+          1
+        ],
+        "shininess": [
+          44
+        ],
+        "diffuseTexture": "../textures/plants.tga",
+        "normalTexture": "../textures/plants_normal.tga",
+        "reflectionCubeTexture": "../textures/SkyCubeMap.dds",
+        "NormalizeCubeTexture": "../textures/NormalizeCubeMap.dds",
+        "shadowCarColor": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "carHueColorChange": [
+          0
+        ]
+      }
     }
   },
-  "Material__39": {
-    "Effect": "../shaders/ReflectionSimpleGlass.fx",
-    "Parameters": {
-      "lightDir": 0,
-      "ambientColor": [
-        0.160784,
-        0.160784,
-        0.160784,
-        1
-      ],
-      "diffuseColor": [
-        1,
-        1,
-        1,
-        1
-      ],
-      "specularColor": [
-        1,
-        1,
-        1,
-        1
-      ],
-      "shininess": [
-        16
-      ],
-      "alphaFactor": [
-        1
-      ],
-      "reflectionCubeTexture": "../textures/SkyCubeMap.dds",
-      "technique": 1
-    }
-  },
-  "Hotel01_dach": {
-    "Effect": "../shaders/NormalMapping.fx",
-    "Parameters": {
-      "lightDir": 0,
-      "ambientColor": [
-        0.247059,
-        0.247059,
-        0.247059,
-        1
-      ],
-      "diffuseColor": [
-        0.87451,
-        0.87451,
-        0.87451,
-        1
-      ],
-      "specularColor": [
-        0.8,
-        0.8,
-        0.8,
-        1
-      ],
-      "shininess": [
-        45
-      ],
-      "diffuseTexture": "../textures/Hotel01.tga",
-      "normalTexture": "../textures/Hotel01Normal.tga",
-      "reflectionCubeTexture": "../textures/SkyCubeMap.dds",
-      "NormalizeCubeTexture": "../textures/NormalizeCubeMap.dds",
-      "shadowCarColor": [
-        1,
-        1,
-        1,
-        1
-      ],
-      "carHueColorChange": [
-        0
-      ],
-      "technique": 6
-    }
-  },
-  "HotelPoster": {
-    "Effect": "../shaders/NormalMapping.fx",
-    "Parameters": {
-      "lightDir": 0,
-      "ambientColor": [
-        0.498039,
-        0.498039,
-        0.498039,
-        1
-      ],
-      "diffuseColor": [
-        0.615686,
-        0.615686,
-        0.615686,
-        1
-      ],
-      "specularColor": [
-        0.780392,
-        0.780392,
-        0.780392,
-        1
-      ],
-      "shininess": [
-        15
-      ],
-      "diffuseTexture": "../textures/Hotel01.tga",
-      "normalTexture": "../textures/Hotel01Normal.tga",
-      "reflectionCubeTexture": "../textures/SkyCubeMap.dds",
-      "NormalizeCubeTexture": "../textures/NormalizeCubeMap.dds",
-      "shadowCarColor": [
-        1,
-        1,
-        1,
-        1
-      ],
-      "carHueColorChange": [
-        0
-      ],
-      "technique": 4
-    }
-  },
-  "plants": {
-    "Effect": "../shaders/NormalMapping.fx",
-    "Parameters": {
-      "lightDir": 0,
-      "ambientColor": [
-        0.545098,
-        0.545098,
-        0.545098,
-        1
-      ],
-      "diffuseColor": [
-        0.431373,
-        0.431373,
-        0.431373,
-        1
-      ],
-      "specularColor": [
-        0.992157,
-        0.992157,
-        0.992157,
-        1
-      ],
-      "shininess": [
-        44
-      ],
-      "diffuseTexture": "../textures/plants.tga",
-      "normalTexture": "../textures/plants_normal.tga",
-      "reflectionCubeTexture": "../textures/SkyCubeMap.dds",
-      "NormalizeCubeTexture": "../textures/NormalizeCubeMap.dds",
-      "shadowCarColor": [
-        1,
-        1,
-        1,
-        1
-      ],
-      "carHueColorChange": [
-        0
-      ],
-      "technique": 6
-    }
+  "MeshesMaterials": {
+    "Hotel01": [
+      "Hotel01"
+    ],
+    "Glas": [
+      "Material__39"
+    ],
+    "Object02": [
+      "Hotel01_dach"
+    ],
+    "Object03": [
+      "HotelPoster"
+    ],
+    "pflanzen01": [
+      "plants"
+    ],
+    "pflanzen02": [
+      "plants"
+    ],
+    "Pflanzen03": [
+      "plants"
+    ],
+    "Pflanzen04": [
+      "plants"
+    ],
+    "pflanzen03": [
+      "plants"
+    ],
+    "Pflanzen05": [
+      "plants"
+    ],
+    "pflanzen04": [
+      "plants"
+    ],
+    "Pflanzen06": [
+      "plants"
+    ]
   }
 }

@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using RacingGame.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text.Json;
 
@@ -13,18 +14,27 @@ namespace RacingGame
 		private class MaterialData
 		{
 			public string Effect { get; set; }
+			public string Technique { get; set; }
 
 			public Dictionary<string, JsonElement> Parameters { get; set; }
 		}
 
-		private static AssetLoader<Dictionary<string, EffectInfo>> _effectInfoLoader = (manager, assetName, settings, tag) =>
+		private class MaterialData2
 		{
-			var result = new Dictionary<string, EffectInfo>();
+			public Dictionary<string, MaterialData> Materials { get; set; }
+			public Dictionary<string, string[]> MeshesMaterials { get; set; }
+
+		}
+
+		private static AssetLoader<MaterialInfo> _effectInfoLoader = (manager, assetName, settings, tag) =>
+		{
+			Debug.WriteLine("Loading material: " + assetName);
+
+			var result = new MaterialInfo();
 			var data = manager.ReadAsString(assetName);
 
-			var materialData = JsonSerializer.Deserialize<Dictionary<string, MaterialData>>(data);
-
-			foreach(var pair in materialData)
+			var materialData = JsonSerializer.Deserialize<MaterialData2>(data);
+			foreach(var pair in materialData.Materials)
 			{
 				var md = pair.Value;
 
@@ -37,18 +47,11 @@ namespace RacingGame
 				var effectPath = Path.ChangeExtension(md.Effect, "efb");
 				var effect = manager.LoadEffect(BaseGame.Device, effectPath).Clone();
 				effect.Name = pair.Key;
-				int? techniqueIndex = null;
 
 				// Set parameters
 				foreach(var pair2 in md.Parameters)
 				{
 					var val = pair2.Value;
-					if (pair2.Key == "technique")
-					{
-						techniqueIndex = val.GetInt32();
-						continue;
-					}
-
 					var par = effect.Parameters[pair2.Key];
 					if (par == null)
 					{
@@ -112,19 +115,25 @@ namespace RacingGame
 					}
 				}
 
-				if (techniqueIndex == null)
+				var effectInfo = new EffectInfo(effect, pair.Value.Technique);
+				result.Effects[pair.Key] = effectInfo;
+			}
+
+			foreach(var pair in materialData.MeshesMaterials)
+			{
+				var effects = new List<EffectInfo>();
+				foreach(var val in pair.Value)
 				{
-					throw new Exception($"Could not determine technique index for {assetName}/{pair.Key}");
+					effects.Add(result.Effects[val]);
 				}
 
-				var effectInfo = new EffectInfo(effect, techniqueIndex.Value);
-				result[pair.Key] = effectInfo;
+				result.MeshesEffects[pair.Key] = effects.ToArray();
 			}
 
 			return result;
 		};
 
-		public static Dictionary<string, EffectInfo> LoadMaterialInfo(this AssetManager assetManager, string assetName)
+		public static MaterialInfo LoadMaterialInfo(this AssetManager assetManager, string assetName)
 		{
 			return assetManager.UseLoader(_effectInfoLoader, assetName);
 		}

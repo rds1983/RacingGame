@@ -1,43 +1,48 @@
 {
-  "PDX20_-_Default": {
-    "Effect": "../shaders/NormalMapping.fx",
-    "Parameters": {
-      "lightDir": 0,
-      "ambientColor": [
-        0.352941,
-        0.352941,
-        0.352941,
-        1
-      ],
-      "diffuseColor": [
-        0.568627,
-        0.568627,
-        0.568627,
-        1
-      ],
-      "specularColor": [
-        0.447059,
-        0.447059,
-        0.447059,
-        1
-      ],
-      "shininess": [
-        16
-      ],
-      "diffuseTexture": "../textures/building4.tga",
-      "normalTexture": "../textures/building4Normal.tga",
-      "reflectionCubeTexture": "../textures/SkyCubeMap.dds",
-      "NormalizeCubeTexture": "../textures/NormalizeCubeMap.dds",
-      "shadowCarColor": [
-        1,
-        1,
-        1,
-        1
-      ],
-      "carHueColorChange": [
-        0
-      ],
-      "technique": 8
+  "Materials": {
+    "PDX20_-_Default": {
+      "Effect": "../shaders/NormalMapping.fx",
+      "Technique": "SpecularWithReflection20",
+      "Parameters": {
+        "lightDir": 0,
+        "ambientColor": [
+          0.352941,
+          0.352941,
+          0.352941,
+          1
+        ],
+        "diffuseColor": [
+          0.568627,
+          0.568627,
+          0.568627,
+          1
+        ],
+        "specularColor": [
+          0.447059,
+          0.447059,
+          0.447059,
+          1
+        ],
+        "shininess": [
+          16
+        ],
+        "diffuseTexture": "../textures/building4.tga",
+        "normalTexture": "../textures/building4Normal.tga",
+        "reflectionCubeTexture": "../textures/SkyCubeMap.dds",
+        "NormalizeCubeTexture": "../textures/NormalizeCubeMap.dds",
+        "shadowCarColor": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "carHueColorChange": [
+          0
+        ]
+      }
     }
+  },
+  "MeshesMaterials": {
+    "Box10": []
   }
 }

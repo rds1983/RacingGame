@@ -1,43 +1,53 @@
 {
-  "PDX02_-_Default": {
-    "Effect": "../shaders/NormalMapping.fx",
-    "Parameters": {
-      "lightDir": 1,
-      "ambientColor": [
-        0.486275,
-        0.486275,
-        0.486275,
-        1
-      ],
-      "diffuseColor": [
-        0.65098,
-        0.65098,
-        0.65098,
-        1
-      ],
-      "specularColor": [
-        1,
-        1,
-        1,
-        1
-      ],
-      "shininess": [
-        16
-      ],
-      "diffuseTexture": "../textures/Windmill.tga",
-      "normalTexture": "../textures/WindmillNormal.tga",
-      "reflectionCubeTexture": "../textures/SkyCubeMap.dds",
-      "NormalizeCubeTexture": "../textures/NormalizeCubeMap.dds",
-      "shadowCarColor": [
-        1,
-        1,
-        1,
-        1
-      ],
-      "carHueColorChange": [
-        0
-      ],
-      "technique": 6
+  "Materials": {
+    "PDX02_-_Default": {
+      "Effect": "../shaders/NormalMapping.fx",
+      "Technique": "DiffuseSpecular20",
+      "Parameters": {
+        "lightDir": 1,
+        "ambientColor": [
+          0.486275,
+          0.486275,
+          0.486275,
+          1
+        ],
+        "diffuseColor": [
+          0.65098,
+          0.65098,
+          0.65098,
+          1
+        ],
+        "specularColor": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "shininess": [
+          16
+        ],
+        "diffuseTexture": "../textures/Windmill.tga",
+        "normalTexture": "../textures/WindmillNormal.tga",
+        "reflectionCubeTexture": "../textures/SkyCubeMap.dds",
+        "NormalizeCubeTexture": "../textures/NormalizeCubeMap.dds",
+        "shadowCarColor": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "carHueColorChange": [
+          0
+        ]
+      }
     }
+  },
+  "MeshesMaterials": {
+    "Windmill_LowPoly": [
+      "PDX02_-_Default"
+    ],
+    "Windmill_Wings": [
+      "PDX02_-_Default"
+    ]
   }
 }

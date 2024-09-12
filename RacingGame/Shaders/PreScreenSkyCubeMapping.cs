@@ -73,7 +73,7 @@ namespace RacingGame.Shaders
         public PreScreenSkyCubeMapping()
             : base(Filename)
         {
-            cube = BaseGame.Content.LoadModel(@"Models\Cube.gltf");
+            cube = BaseGame.Content.LoadModel(@"Models\Cube.glb");
         }
         #endregion
 

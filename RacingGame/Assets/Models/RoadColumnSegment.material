@@ -1,83 +1,101 @@
 {
-  "orig_09_-_Default": {
-    "Effect": "../shaders/NormalMapping.fx",
-    "Parameters": {
-      "lightDir": 0,
-      "ambientColor": [
-        0.313726,
-        0.313726,
-        0.313726,
-        1
-      ],
-      "diffuseColor": [
-        0.654902,
-        0.654902,
-        0.654902,
-        1
-      ],
-      "specularColor": [
-        1,
-        1,
-        1,
-        1
-      ],
-      "shininess": [
-        16
-      ],
-      "diffuseTexture": "../textures/RoadColumnSegment.tga",
-      "normalTexture": "../textures/RoadColumnSegmentNormal.tga",
-      "reflectionCubeTexture": "../textures/SkyCubeMap.dds",
-      "NormalizeCubeTexture": "../textures/NormalizeCubeMap.dds",
-      "shadowCarColor": [
-        1,
-        1,
-        1,
-        1
-      ],
-      "carHueColorChange": [
-        0
-      ],
-      "technique": 6
+  "Materials": {
+    "orig_09_-_Default": {
+      "Effect": "../shaders/NormalMapping.fx",
+      "Technique": "DiffuseSpecular20",
+      "Parameters": {
+        "lightDir": 0,
+        "ambientColor": [
+          0.313726,
+          0.313726,
+          0.313726,
+          1
+        ],
+        "diffuseColor": [
+          0.654902,
+          0.654902,
+          0.654902,
+          1
+        ],
+        "specularColor": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "shininess": [
+          16
+        ],
+        "diffuseTexture": "../textures/RoadColumnSegment.tga",
+        "normalTexture": "../textures/RoadColumnSegmentNormal.tga",
+        "reflectionCubeTexture": "../textures/SkyCubeMap.dds",
+        "NormalizeCubeTexture": "../textures/NormalizeCubeMap.dds",
+        "shadowCarColor": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "carHueColorChange": [
+          0
+        ]
+      }
+    },
+    "PDX04_-_Default_04_-_DefaultSub0": {
+      "Effect": null,
+      "Technique": null,
+      "Parameters": {}
+    },
+    "PDX04_-_Default_Material__57Sub1": {
+      "Effect": null,
+      "Technique": null,
+      "Parameters": {}
+    },
+    "PDX04_-_Default_Material__58Sub2": {
+      "Effect": null,
+      "Technique": null,
+      "Parameters": {}
+    },
+    "PDX04_-_Default_Material__59Sub3": {
+      "Effect": null,
+      "Technique": null,
+      "Parameters": {}
+    },
+    "PDX04_-_Default_Material__60Sub4": {
+      "Effect": null,
+      "Technique": null,
+      "Parameters": {}
+    },
+    "PDX04_-_Default_Material__61Sub5": {
+      "Effect": null,
+      "Technique": null,
+      "Parameters": {}
+    },
+    "PDX04_-_Default_Material__62Sub6": {
+      "Effect": null,
+      "Technique": null,
+      "Parameters": {}
+    },
+    "PDX04_-_Default_Material__63Sub7": {
+      "Effect": null,
+      "Technique": null,
+      "Parameters": {}
+    },
+    "PDX04_-_Default_Material__64Sub8": {
+      "Effect": null,
+      "Technique": null,
+      "Parameters": {}
+    },
+    "PDX04_-_Default_Material__65Sub9": {
+      "Effect": null,
+      "Technique": null,
+      "Parameters": {}
     }
   },
-  "PDX04_-_Default_04_-_DefaultSub0": {
-    "Effect": null,
-    "Parameters": {}
-  },
-  "PDX04_-_Default_Material__57Sub1": {
-    "Effect": null,
-    "Parameters": {}
-  },
-  "PDX04_-_Default_Material__58Sub2": {
-    "Effect": null,
-    "Parameters": {}
-  },
-  "PDX04_-_Default_Material__59Sub3": {
-    "Effect": null,
-    "Parameters": {}
-  },
-  "PDX04_-_Default_Material__60Sub4": {
-    "Effect": null,
-    "Parameters": {}
-  },
-  "PDX04_-_Default_Material__61Sub5": {
-    "Effect": null,
-    "Parameters": {}
-  },
-  "PDX04_-_Default_Material__62Sub6": {
-    "Effect": null,
-    "Parameters": {}
-  },
-  "PDX04_-_Default_Material__63Sub7": {
-    "Effect": null,
-    "Parameters": {}
-  },
-  "PDX04_-_Default_Material__64Sub8": {
-    "Effect": null,
-    "Parameters": {}
-  },
-  "PDX04_-_Default_Material__65Sub9": {
-    "Effect": null,
-    "Parameters": {}
+  "MeshesMaterials": {
+    "RoadColumnSegment": [
+      "orig_09_-_Default"
+    ],
+    "Cylinder02": []
   }
 }

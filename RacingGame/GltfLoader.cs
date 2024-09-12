@@ -70,14 +70,14 @@ namespace RacingGame
 
 		private AssetManager _assetManager;
 		private string _assetName;
-		private Gltf _gltf;
+		private Gltf _glb;
 		private readonly Dictionary<int, byte[]> _bufferCache = new Dictionary<int, byte[]>();
 		private readonly List<ModelMesh> _meshes = new List<ModelMesh>();
 		private Model _model;
 		private readonly List<ModelBone> _allNodes = new List<ModelBone>();
 		private readonly List<Vector3> _allPositions = new List<Vector3>();
 		private readonly Dictionary<int, ModelBoneCollection> _skinCache = new Dictionary<int, ModelBoneCollection>();
-		private Dictionary<string, EffectInfo> _materialInfo;
+		private MaterialInfo _materialInfo;
 
 		private byte[] FileResolver(string path)
 		{
@@ -100,7 +100,7 @@ namespace RacingGame
 				return result;
 			}
 
-			result = _gltf.LoadBinaryBuffer(index, path => FileResolver(path));
+			result = _glb.LoadBinaryBuffer(index, path => FileResolver(path));
 			_bufferCache[index] = result;
 
 			return result;
@@ -108,7 +108,7 @@ namespace RacingGame
 
 		private ArraySegment<byte> GetBufferView(int bufferViewIndex)
 		{
-			var bufferView = _gltf.BufferViews[bufferViewIndex];
+			var bufferView = _glb.BufferViews[bufferViewIndex];
 			var buffer = GetBuffer(bufferView.Buffer);
 
 			return new ArraySegment<byte>(buffer, bufferView.ByteOffset, bufferView.ByteLength);
@@ -116,13 +116,13 @@ namespace RacingGame
 
 		private ArraySegment<byte> GetAccessorData(int accessorIndex)
 		{
-			var accessor = _gltf.Accessors[accessorIndex];
+			var accessor = _glb.Accessors[accessorIndex];
 			if (accessor.BufferView == null)
 			{
 				throw new NotSupportedException("Accessors without buffer index arent supported");
 			}
 
-			var bufferView = _gltf.BufferViews[accessor.BufferView.Value];
+			var bufferView = _glb.BufferViews[accessor.BufferView.Value];
 			var buffer = GetBuffer(bufferView.Buffer);
 
 			var size = accessor.Type.GetComponentCount() * accessor.ComponentType.GetComponentSize();
@@ -137,7 +137,7 @@ namespace RacingGame
 				throw new NotSupportedException("Only float/Vector3/Vector4 types are supported");
 			}
 
-			var accessor = _gltf.Accessors[accessorIndex];
+			var accessor = _glb.Accessors[accessorIndex];
 			if (accessor.Type == Accessor.TypeEnum.SCALAR && type != typeof(float))
 			{
 				throw new NotSupportedException("Scalar type could be converted only to float");
@@ -182,7 +182,7 @@ namespace RacingGame
 
 		private VertexElementFormat GetAccessorFormat(int index)
 		{
-			var accessor = _gltf.Accessors[index];
+			var accessor = _glb.Accessors[index];
 
 			switch (accessor.Type)
 			{
@@ -236,30 +236,14 @@ namespace RacingGame
 			return CreateTransform(translation, scale, quaternion);
 		}
 
-		/*		private void LoadAnimationTransforms<T>(AnimationTransforms<T> animationTransforms, float[] times, AnimationSampler sampler)
-				{
-					var translations = GetAccessorAs<T>(sampler.Output);
-					if (times.Length != translations.Length)
-					{
-						throw new NotSupportedException("Translation length is different from times length");
-					}
-
-					for (var i = 0; i < times.Length; ++i)
-					{
-						animationTransforms.Values.Add(new AnimationTransformKeyframe<T>(times[i], translations[i]));
-					}
-
-					animationTransforms.Interpolation = sampler.Interpolation;
-				}*/
-
 		private void LoadMeshes()
 		{
-			foreach (var gltfMesh in _gltf.Meshes)
+			foreach (var glbMesh in _glb.Meshes)
 			{
 				var meshes = new List<ModelMeshPart>();
 				var effects = new List<Effect>();
 				var positions = new List<Vector3>();
-				foreach (var primitive in gltfMesh.Primitives)
+				foreach (var primitive in glbMesh.Primitives)
 				{
 					positions.Clear();
 					if (primitive.Mode != MeshPrimitive.ModeEnum.TRIANGLES)
@@ -272,7 +256,7 @@ namespace RacingGame
 					int? vertexCount = null;
 					foreach (var pair in primitive.Attributes)
 					{
-						var accessor = _gltf.Accessors[pair.Value];
+						var accessor = _glb.Accessors[pair.Value];
 						var newVertexCount = accessor.Count;
 						if (vertexCount != null && vertexCount.Value != newVertexCount)
 						{
@@ -389,7 +373,7 @@ namespace RacingGame
 						throw new NotSupportedException("Meshes without indices arent supported");
 					}
 
-					var indexAccessor = _gltf.Accessors[primitive.Indices.Value];
+					var indexAccessor = _glb.Accessors[primitive.Indices.Value];
 					if (indexAccessor.Type != Accessor.TypeEnum.SCALAR)
 					{
 						throw new NotSupportedException("Only scalar index buffer are supported");
@@ -415,13 +399,14 @@ namespace RacingGame
 					var mesh = XNA.CreateModelMeshPart();
 					mesh.SetVertexBuffer(vertexBuffer);
 					mesh.SetIndexBuffer(indexBuffer);
+					mesh.SetPrimitiveCount(vertexBuffer.VertexCount / 3);
 
 					if (primitive.Material != null)
 					{
-						var gltfMaterial = _gltf.Materials[primitive.Material.Value];
+						var glbMaterial = _glb.Materials[primitive.Material.Value];
 
 						EffectInfo effectInfo;
-						if (_materialInfo.TryGetValue(gltfMaterial.Name, out effectInfo))
+						if (_materialInfo.Effects.TryGetValue(glbMaterial.Name, out effectInfo))
 						{
 							effect = effectInfo.Effect;
 						}
@@ -432,7 +417,7 @@ namespace RacingGame
 				}
 
 				var modelMesh = XNA.CreateModelMesh(meshes);
-				modelMesh.SetName(gltfMesh.Name);
+				modelMesh.SetName(glbMesh.Name);
 
 				for (var i = 0; i < effects.Count; ++i)
 				{
@@ -451,22 +436,22 @@ namespace RacingGame
 				return result;
 			}
 
-			var gltfSkin = _gltf.Skins[skinId];
-			if (gltfSkin.Joints.Length > MaximumBones)
+			var glbSkin = _glb.Skins[skinId];
+			if (glbSkin.Joints.Length > MaximumBones)
 			{
-				throw new Exception($"Skin {gltfSkin.Name} has {gltfSkin.Joints.Length} bones which exceeds maximum {MaximumBones}");
+				throw new Exception($"Skin {glbSkin.Name} has {glbSkin.Joints.Length} bones which exceeds maximum {MaximumBones}");
 			}
 
 			var bones = new List<ModelBone>();
-			foreach (var jointIndex in gltfSkin.Joints)
+			foreach (var jointIndex in glbSkin.Joints)
 			{
 				bones.Add(_allNodes[jointIndex]);
 			}
 
 			result = XNA.CreateModelBoneCollection(bones);
 
-			//			result.Transforms = GetAccessorAs<Matrix>(gltfSkin.InverseBindMatrices.Value);
-			Debug.WriteLine($"Skin {gltfSkin.Name} has {gltfSkin.Joints.Length} joints");
+			//			result.Transforms = GetAccessorAs<Matrix>(glbSkin.InverseBindMatrices.Value);
+			Debug.WriteLine($"Skin {glbSkin.Name} has {glbSkin.Joints.Length} joints");
 
 			_skinCache[skinId] = result;
 
@@ -476,29 +461,29 @@ namespace RacingGame
 		private void LoadAllNodes()
 		{
 			// First run - load all nodes
-			for (var i = 0; i < _gltf.Nodes.Length; ++i)
+			for (var i = 0; i < _glb.Nodes.Length; ++i)
 			{
-				var gltfNode = _gltf.Nodes[i];
+				var glbNode = _glb.Nodes[i];
 
 				var modelBone = XNA.CreateModelBone();
 
-				modelBone.SetName(gltfNode.Name);
+				modelBone.SetName(glbNode.Name);
 
-				var defaultTranslation = gltfNode.Translation != null ? gltfNode.Translation.ToVector3() : Vector3.Zero;
-				var defaultScale = gltfNode.Scale != null ? gltfNode.Scale.ToVector3() : Vector3.One;
-				var defaultRotation = gltfNode.Rotation != null ? gltfNode.Rotation.ToQuaternion() : Quaternion.Identity;
+				var defaultTranslation = glbNode.Translation != null ? glbNode.Translation.ToVector3() : Vector3.Zero;
+				var defaultScale = glbNode.Scale != null ? glbNode.Scale.ToVector3() : Vector3.One;
+				var defaultRotation = glbNode.Rotation != null ? glbNode.Rotation.ToQuaternion() : Quaternion.Identity;
 
 				modelBone.Transform = Mathematics.CreateTransform(defaultTranslation, defaultScale, defaultRotation);
 
-				if (gltfNode.Matrix != null)
+				if (glbNode.Matrix != null)
 				{
-					var matrix = gltfNode.Matrix.ToMatrix();
+					var matrix = glbNode.Matrix.ToMatrix();
 					modelBone.Transform = matrix;
 				}
 
-				if (gltfNode.Mesh != null)
+				if (glbNode.Mesh != null)
 				{
-					var mesh = _meshes[gltfNode.Mesh.Value];
+					var mesh = _meshes[glbNode.Mesh.Value];
 					modelBone.AddMesh(mesh);
 
 					mesh.SetName(modelBone.Name);
@@ -509,23 +494,14 @@ namespace RacingGame
 			}
 
 			// Second run - set children and skins
-			for (var i = 0; i < _gltf.Nodes.Length; ++i)
+			for (var i = 0; i < _glb.Nodes.Length; ++i)
 			{
-				var gltfNode = _gltf.Nodes[i];
+				var glbNode = _glb.Nodes[i];
 				var modelBone = _allNodes[i];
 
-				/*				if (gltfNode.Skin != null)
-								{
-									modelBone.Skin = LoadSkin(gltfNode.Skin.Value);
-									foreach (var mesh in modelBone.Meshes)
-									{
-										((DefaultMaterial)mesh.Material).Skinning = true;
-									}
-								}*/
-
-				if (gltfNode.Children != null)
+				if (glbNode.Children != null)
 				{
-					foreach (var childIndex in gltfNode.Children)
+					foreach (var childIndex in glbNode.Children)
 					{
 						var childNode = _allNodes[childIndex];
 
@@ -538,8 +514,6 @@ namespace RacingGame
 
 		public Model Load(AssetManager manager, string assetName)
 		{
-			Debug.WriteLine(assetName);
-
 			// Load material
 			var matName = Path.ChangeExtension(assetName, "material");
 			_materialInfo = manager.LoadMaterialInfo(matName);
@@ -552,74 +526,25 @@ namespace RacingGame
 			_assetName = assetName;
 			using (var stream = manager.Open(assetName))
 			{
-				_gltf = Interface.LoadModel(stream);
+				_glb = Interface.LoadModel(stream);
 			}
 
 			LoadMeshes();
 			LoadAllNodes();
 
+			foreach (var mesh in _meshes)
+			{
+				var effects = _materialInfo.MeshesEffects[mesh.Name];
+				for (var i = 0; i < mesh.MeshParts.Count; ++i)
+				{
+
+				}
+			}
+
 			_model = XNA.CreateModel(_allNodes, _meshes);
 
-			var scene = _gltf.Scenes[_gltf.Scene.Value];
+			var scene = _glb.Scenes[_glb.Scene.Value];
 			_model.SetRoot(_allNodes[scene.Nodes[0]]);
-
-			/*			if (_gltf.Animations != null)
-						{
-							foreach (var gltfAnimation in _gltf.Animations)
-							{
-								var animation = new ModelAnimation
-								{
-									Id = gltfAnimation.Name
-								};
-
-								var channelsDict = new Dictionary<int, List<PathInfo>>();
-								foreach (var channel in gltfAnimation.Channels)
-								{
-									if (!channelsDict.TryGetValue(channel.Target.Node.Value, out List<PathInfo> targets))
-									{
-										targets = new List<PathInfo>();
-										channelsDict[channel.Target.Node.Value] = targets;
-									}
-
-									targets.Add(new PathInfo(channel.Sampler, channel.Target.Path));
-								}
-
-								foreach (var pair in channelsDict)
-								{
-									var nodeAnimation = new NodeAnimation(_allNodes[pair.Key]);
-
-									foreach (var pathInfo in pair.Value)
-									{
-										var sampler = gltfAnimation.Samplers[pathInfo.Sampler];
-										var times = GetAccessorAs<float>(sampler.Input);
-
-										switch (pathInfo.Path)
-										{
-											case PathEnum.translation:
-												LoadAnimationTransforms(nodeAnimation.Translations, times, sampler);
-												break;
-											case PathEnum.rotation:
-												LoadAnimationTransforms(nodeAnimation.Rotations, times, sampler);
-												break;
-											case PathEnum.scale:
-												LoadAnimationTransforms(nodeAnimation.Scales, times, sampler);
-												break;
-											case PathEnum.weights:
-												break;
-										}
-									}
-
-									animation.BoneAnimations.Add(nodeAnimation);
-								}
-
-								animation.UpdateStartEnd();
-
-								var id = animation.Id ?? "(default)";
-								_model.Animations[id] = animation;
-							}
-						}
-
-						_model.UpdateBoundingBox();*/
 
 			return _model;
 		}

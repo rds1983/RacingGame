@@ -1,5 +1,6 @@
 ﻿using AssetManagementBase;
 using Microsoft.Xna.Framework.Graphics;
+using System.Diagnostics;
 
 namespace RacingGame
 {
@@ -7,6 +8,8 @@ namespace RacingGame
 	{
 		private static AssetLoader<Model> _modelLoader = (manager, assetName, settings, tag) =>
 		{
+			Debug.WriteLine("Loading model: " + assetName);
+
 			var loader = new GltfLoader();
 
 			return loader.Load(manager, assetName);

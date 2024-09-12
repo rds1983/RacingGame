@@ -1,239 +1,267 @@
 {
-  "Standard_19": {
-    "Effect": "../shaders/ReflectionSimpleGlass.fx",
-    "Parameters": {
-      "lightDir": 0,
-      "ambientColor": [
-        0.1,
-        0.1,
-        0.1,
-        1
-      ],
-      "diffuseColor": [
-        0.05098,
-        0.05098,
-        0.05098,
-        1
-      ],
-      "specularColor": [
-        0.917647,
-        0.917647,
-        1,
-        1
-      ],
-      "shininess": [
-        64
-      ],
-      "alphaFactor": [
-        0.66
-      ],
-      "reflectionCubeTexture": "../textures/SkyCubeMap.dds",
-      "technique": 1
+  "Materials": {
+    "Standard_19": {
+      "Effect": "../shaders/ReflectionSimpleGlass.fx",
+      "Technique": "ReflectionSpecular20",
+      "Parameters": {
+        "lightDir": 0,
+        "ambientColor": [
+          0.1,
+          0.1,
+          0.1,
+          1
+        ],
+        "diffuseColor": [
+          0.05098,
+          0.05098,
+          0.05098,
+          1
+        ],
+        "specularColor": [
+          0.917647,
+          0.917647,
+          1,
+          1
+        ],
+        "shininess": [
+          64
+        ],
+        "alphaFactor": [
+          0.66
+        ],
+        "reflectionCubeTexture": "../textures/SkyCubeMap.dds"
+      }
+    },
+    "Material__803_lackSub0": {
+      "Effect": "../shaders/NormalMapping.fx",
+      "Technique": "SpecularWithReflection20",
+      "Parameters": {
+        "lightDir": 0,
+        "ambientColor": [
+          0.203922,
+          0.203922,
+          0.203922,
+          1
+        ],
+        "diffuseColor": [
+          0.807843,
+          0.807843,
+          0.807843,
+          1
+        ],
+        "specularColor": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "shininess": [
+          16
+        ],
+        "diffuseTexture": "../textures/RacerCar.tga",
+        "normalTexture": "../textures/RacerCarNormal.tga",
+        "reflectionCubeTexture": "../textures/SkyCubeMap.dds",
+        "NormalizeCubeTexture": "../textures/NormalizeCubeMap.dds",
+        "shadowCarColor": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "carHueColorChange": [
+          0
+        ]
+      }
+    },
+    "Material__803_gummiSub1": {
+      "Effect": "../shaders/NormalMapping.fx",
+      "Technique": "Specular20",
+      "Parameters": {
+        "lightDir": 0,
+        "ambientColor": [
+          0.141176,
+          0.141176,
+          0.141176,
+          1
+        ],
+        "diffuseColor": [
+          0.392157,
+          0.392157,
+          0.392157,
+          1
+        ],
+        "specularColor": [
+          0.227451,
+          0.227451,
+          0.227451,
+          1
+        ],
+        "shininess": [
+          44
+        ],
+        "diffuseTexture": "../textures/RacerCar.tga",
+        "normalTexture": "../textures/RacerCarNormal.tga",
+        "reflectionCubeTexture": "../textures/SkyCubeMap.dds",
+        "NormalizeCubeTexture": "../textures/NormalizeCubeMap.dds",
+        "shadowCarColor": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "carHueColorChange": [
+          0
+        ]
+      }
+    },
+    "Material__803_chromeSub2": {
+      "Effect": "../shaders/NormalMapping.fx",
+      "Technique": "SpecularWithReflection20",
+      "Parameters": {
+        "lightDir": 0,
+        "ambientColor": [
+          0.713726,
+          0.713726,
+          0.713726,
+          1
+        ],
+        "diffuseColor": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "specularColor": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "shininess": [
+          16
+        ],
+        "diffuseTexture": "../textures/RacerCar.tga",
+        "normalTexture": "../textures/RacerCarNormal.tga",
+        "reflectionCubeTexture": "../textures/SkyCubeMap.dds",
+        "NormalizeCubeTexture": "../textures/NormalizeCubeMap.dds",
+        "shadowCarColor": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "carHueColorChange": [
+          0
+        ]
+      }
+    },
+    "Material__815_gummiSub0": {
+      "Effect": "../shaders/NormalMapping.fx",
+      "Technique": "Specular20",
+      "Parameters": {
+        "lightDir": 0,
+        "ambientColor": [
+          0.141176,
+          0.141176,
+          0.141176,
+          1
+        ],
+        "diffuseColor": [
+          0.392157,
+          0.392157,
+          0.392157,
+          1
+        ],
+        "specularColor": [
+          0.227451,
+          0.227451,
+          0.227451,
+          1
+        ],
+        "shininess": [
+          44
+        ],
+        "diffuseTexture": "../textures/RacerCar.tga",
+        "normalTexture": "../textures/RacerCarNormal.tga",
+        "reflectionCubeTexture": "../textures/SkyCubeMap.dds",
+        "NormalizeCubeTexture": "../textures/NormalizeCubeMap.dds",
+        "shadowCarColor": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "carHueColorChange": [
+          0
+        ]
+      }
+    },
+    "Material__815_chromeSub1": {
+      "Effect": "../shaders/NormalMapping.fx",
+      "Technique": "SpecularWithReflection20",
+      "Parameters": {
+        "lightDir": 0,
+        "ambientColor": [
+          0.713726,
+          0.713726,
+          0.713726,
+          1
+        ],
+        "diffuseColor": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "specularColor": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "shininess": [
+          16
+        ],
+        "diffuseTexture": "../textures/RacerCar.tga",
+        "normalTexture": "../textures/RacerCarNormal.tga",
+        "reflectionCubeTexture": "../textures/SkyCubeMap.dds",
+        "NormalizeCubeTexture": "../textures/NormalizeCubeMap.dds",
+        "shadowCarColor": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "carHueColorChange": [
+          0
+        ]
+      }
     }
   },
-  "Material__803_lackSub0": {
-    "Effect": "../shaders/NormalMapping.fx",
-    "Parameters": {
-      "lightDir": 0,
-      "ambientColor": [
-        0.203922,
-        0.203922,
-        0.203922,
-        1
-      ],
-      "diffuseColor": [
-        0.807843,
-        0.807843,
-        0.807843,
-        1
-      ],
-      "specularColor": [
-        1,
-        1,
-        1,
-        1
-      ],
-      "shininess": [
-        16
-      ],
-      "diffuseTexture": "../textures/RacerCar.tga",
-      "normalTexture": "../textures/RacerCarNormal.tga",
-      "reflectionCubeTexture": "../textures/SkyCubeMap.dds",
-      "NormalizeCubeTexture": "../textures/NormalizeCubeMap.dds",
-      "shadowCarColor": [
-        1,
-        1,
-        1,
-        1
-      ],
-      "carHueColorChange": [
-        0
-      ],
-      "technique": 8
-    }
-  },
-  "Material__803_gummiSub1": {
-    "Effect": "../shaders/NormalMapping.fx",
-    "Parameters": {
-      "lightDir": 0,
-      "ambientColor": [
-        0.141176,
-        0.141176,
-        0.141176,
-        1
-      ],
-      "diffuseColor": [
-        0.392157,
-        0.392157,
-        0.392157,
-        1
-      ],
-      "specularColor": [
-        0.227451,
-        0.227451,
-        0.227451,
-        1
-      ],
-      "shininess": [
-        44
-      ],
-      "diffuseTexture": "../textures/RacerCar.tga",
-      "normalTexture": "../textures/RacerCarNormal.tga",
-      "reflectionCubeTexture": "../textures/SkyCubeMap.dds",
-      "NormalizeCubeTexture": "../textures/NormalizeCubeMap.dds",
-      "shadowCarColor": [
-        1,
-        1,
-        1,
-        1
-      ],
-      "carHueColorChange": [
-        0
-      ],
-      "technique": 4
-    }
-  },
-  "Material__803_chromeSub2": {
-    "Effect": "../shaders/NormalMapping.fx",
-    "Parameters": {
-      "lightDir": 0,
-      "ambientColor": [
-        0.713726,
-        0.713726,
-        0.713726,
-        1
-      ],
-      "diffuseColor": [
-        1,
-        1,
-        1,
-        1
-      ],
-      "specularColor": [
-        1,
-        1,
-        1,
-        1
-      ],
-      "shininess": [
-        16
-      ],
-      "diffuseTexture": "../textures/RacerCar.tga",
-      "normalTexture": "../textures/RacerCarNormal.tga",
-      "reflectionCubeTexture": "../textures/SkyCubeMap.dds",
-      "NormalizeCubeTexture": "../textures/NormalizeCubeMap.dds",
-      "shadowCarColor": [
-        1,
-        1,
-        1,
-        1
-      ],
-      "carHueColorChange": [
-        0
-      ],
-      "technique": 8
-    }
-  },
-  "Material__815_gummiSub0": {
-    "Effect": "../shaders/NormalMapping.fx",
-    "Parameters": {
-      "lightDir": 0,
-      "ambientColor": [
-        0.141176,
-        0.141176,
-        0.141176,
-        1
-      ],
-      "diffuseColor": [
-        0.392157,
-        0.392157,
-        0.392157,
-        1
-      ],
-      "specularColor": [
-        0.227451,
-        0.227451,
-        0.227451,
-        1
-      ],
-      "shininess": [
-        44
-      ],
-      "diffuseTexture": "../textures/RacerCar.tga",
-      "normalTexture": "../textures/RacerCarNormal.tga",
-      "reflectionCubeTexture": "../textures/SkyCubeMap.dds",
-      "NormalizeCubeTexture": "../textures/NormalizeCubeMap.dds",
-      "shadowCarColor": [
-        1,
-        1,
-        1,
-        1
-      ],
-      "carHueColorChange": [
-        0
-      ],
-      "technique": 4
-    }
-  },
-  "Material__815_chromeSub1": {
-    "Effect": "../shaders/NormalMapping.fx",
-    "Parameters": {
-      "lightDir": 0,
-      "ambientColor": [
-        0.713726,
-        0.713726,
-        0.713726,
-        1
-      ],
-      "diffuseColor": [
-        1,
-        1,
-        1,
-        1
-      ],
-      "specularColor": [
-        1,
-        1,
-        1,
-        1
-      ],
-      "shininess": [
-        16
-      ],
-      "diffuseTexture": "../textures/RacerCar.tga",
-      "normalTexture": "../textures/RacerCarNormal.tga",
-      "reflectionCubeTexture": "../textures/SkyCubeMap.dds",
-      "NormalizeCubeTexture": "../textures/NormalizeCubeMap.dds",
-      "shadowCarColor": [
-        1,
-        1,
-        1,
-        1
-      ],
-      "carHueColorChange": [
-        0
-      ],
-      "technique": 8
-    }
+  "MeshesMaterials": {
+    "glass": [
+      "Standard_19"
+    ],
+    "Car": [
+      "Material__803_lackSub0",
+      "Material__803_gummiSub1",
+      "Material__803_chromeSub2"
+    ],
+    "WheelFrontRight": [
+      "Material__815_gummiSub0",
+      "Material__815_chromeSub1"
+    ],
+    "WheelBackRight": [
+      "Material__815_gummiSub0",
+      "Material__815_chromeSub1"
+    ],
+    "WheelBackLeft": [
+      "Material__815_gummiSub0",
+      "Material__815_chromeSub1"
+    ],
+    "WheelFrontLeft": [
+      "Material__815_gummiSub0",
+      "Material__815_chromeSub1"
+    ]
   }
 }

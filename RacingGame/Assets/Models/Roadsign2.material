@@ -1,43 +1,50 @@
 {
-  "PDX19_-_Default": {
-    "Effect": "../shaders/NormalMapping.fx",
-    "Parameters": {
-      "lightDir": 0,
-      "ambientColor": [
-        0.203922,
-        0.203922,
-        0.203922,
-        1
-      ],
-      "diffuseColor": [
-        1,
-        1,
-        1,
-        1
-      ],
-      "specularColor": [
-        1,
-        1,
-        1,
-        1
-      ],
-      "shininess": [
-        16
-      ],
-      "diffuseTexture": "../textures/roadsign1.tga",
-      "normalTexture": "../textures/roadsign1Normal.tga",
-      "reflectionCubeTexture": "../textures/SkyCubeMap.dds",
-      "NormalizeCubeTexture": "../textures/NormalizeCubeMap.dds",
-      "shadowCarColor": [
-        1,
-        1,
-        1,
-        1
-      ],
-      "carHueColorChange": [
-        0
-      ],
-      "technique": 8
+  "Materials": {
+    "PDX19_-_Default": {
+      "Effect": "../shaders/NormalMapping.fx",
+      "Technique": "SpecularWithReflection20",
+      "Parameters": {
+        "lightDir": 0,
+        "ambientColor": [
+          0.203922,
+          0.203922,
+          0.203922,
+          1
+        ],
+        "diffuseColor": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "specularColor": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "shininess": [
+          16
+        ],
+        "diffuseTexture": "../textures/roadsign1.tga",
+        "normalTexture": "../textures/roadsign1Normal.tga",
+        "reflectionCubeTexture": "../textures/SkyCubeMap.dds",
+        "NormalizeCubeTexture": "../textures/NormalizeCubeMap.dds",
+        "shadowCarColor": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "carHueColorChange": [
+          0
+        ]
+      }
     }
+  },
+  "MeshesMaterials": {
+    "Cylinder02": [
+      "PDX19_-_Default"
+    ]
   }
 }

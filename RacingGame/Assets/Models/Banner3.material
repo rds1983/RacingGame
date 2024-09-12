@@ -1,43 +1,50 @@
 {
-  "orig_09_-_Default": {
-    "Effect": "../shaders/NormalMapping.fx",
-    "Parameters": {
-      "lightDir": 0,
-      "ambientColor": [
-        0.32549,
-        0.32549,
-        0.32549,
-        1
-      ],
-      "diffuseColor": [
-        0.670588,
-        0.670588,
-        0.670588,
-        1
-      ],
-      "specularColor": [
-        0.760784,
-        0.760784,
-        0.760784,
-        1
-      ],
-      "shininess": [
-        16
-      ],
-      "diffuseTexture": "../textures/banner3.tga",
-      "normalTexture": "../textures/bannerNormal.tga",
-      "reflectionCubeTexture": "../textures/SkyCubeMap.dds",
-      "NormalizeCubeTexture": "../textures/NormalizeCubeMap.dds",
-      "shadowCarColor": [
-        1,
-        1,
-        1,
-        1
-      ],
-      "carHueColorChange": [
-        0
-      ],
-      "technique": 4
+  "Materials": {
+    "orig_09_-_Default": {
+      "Effect": "../shaders/NormalMapping.fx",
+      "Technique": "Specular20",
+      "Parameters": {
+        "lightDir": 0,
+        "ambientColor": [
+          0.32549,
+          0.32549,
+          0.32549,
+          1
+        ],
+        "diffuseColor": [
+          0.670588,
+          0.670588,
+          0.670588,
+          1
+        ],
+        "specularColor": [
+          0.760784,
+          0.760784,
+          0.760784,
+          1
+        ],
+        "shininess": [
+          16
+        ],
+        "diffuseTexture": "../textures/banner3.tga",
+        "normalTexture": "../textures/bannerNormal.tga",
+        "reflectionCubeTexture": "../textures/SkyCubeMap.dds",
+        "NormalizeCubeTexture": "../textures/NormalizeCubeMap.dds",
+        "shadowCarColor": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "carHueColorChange": [
+          0
+        ]
+      }
     }
+  },
+  "MeshesMaterials": {
+    "banner": [
+      "orig_09_-_Default"
+    ]
   }
 }

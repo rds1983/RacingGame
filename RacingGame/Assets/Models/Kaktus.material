@@ -1,43 +1,48 @@
 {
-  "PDX09_-_Default": {
-    "Effect": "../shaders/NormalMapping.fx",
-    "Parameters": {
-      "lightDir": 0,
-      "ambientColor": [
-        0.282353,
-        0.282353,
-        0.282353,
-        1
-      ],
-      "diffuseColor": [
-        1,
-        1,
-        1,
-        1
-      ],
-      "specularColor": [
-        0.419608,
-        0.419608,
-        0.419608,
-        1
-      ],
-      "shininess": [
-        16
-      ],
-      "diffuseTexture": "../textures/Kaktus.tga",
-      "normalTexture": "../textures/KaktusNormal.tga",
-      "reflectionCubeTexture": "../textures/SkyCubeMap.dds",
-      "NormalizeCubeTexture": "../textures/NormalizeCubeMap.dds",
-      "shadowCarColor": [
-        1,
-        1,
-        1,
-        1
-      ],
-      "carHueColorChange": [
-        0
-      ],
-      "technique": 6
+  "Materials": {
+    "PDX09_-_Default": {
+      "Effect": "../shaders/NormalMapping.fx",
+      "Technique": "DiffuseSpecular20",
+      "Parameters": {
+        "lightDir": 0,
+        "ambientColor": [
+          0.282353,
+          0.282353,
+          0.282353,
+          1
+        ],
+        "diffuseColor": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "specularColor": [
+          0.419608,
+          0.419608,
+          0.419608,
+          1
+        ],
+        "shininess": [
+          16
+        ],
+        "diffuseTexture": "../textures/Kaktus.tga",
+        "normalTexture": "../textures/KaktusNormal.tga",
+        "reflectionCubeTexture": "../textures/SkyCubeMap.dds",
+        "NormalizeCubeTexture": "../textures/NormalizeCubeMap.dds",
+        "shadowCarColor": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "carHueColorChange": [
+          0
+        ]
+      }
     }
+  },
+  "MeshesMaterials": {
+    "Kaktus": []
   }
 }

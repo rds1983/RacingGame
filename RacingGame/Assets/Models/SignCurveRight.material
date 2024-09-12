@@ -1,43 +1,50 @@
 {
-  "orig_09_-_Default": {
-    "Effect": "../shaders/NormalMapping.fx",
-    "Parameters": {
-      "lightDir": 0,
-      "ambientColor": [
-        0.313726,
-        0.313726,
-        0.313726,
-        1
-      ],
-      "diffuseColor": [
-        0.835294,
-        0.835294,
-        0.835294,
-        1
-      ],
-      "specularColor": [
-        1,
-        1,
-        1,
-        1
-      ],
-      "shininess": [
-        32
-      ],
-      "diffuseTexture": "../textures/Schild_Kurve_links.tga",
-      "normalTexture": "../textures/Schild_Kurve_linksNormal.tga",
-      "reflectionCubeTexture": "../textures/SkyCubeMap.dds",
-      "NormalizeCubeTexture": "../textures/NormalizeCubeMap.dds",
-      "shadowCarColor": [
-        1,
-        1,
-        1,
-        1
-      ],
-      "carHueColorChange": [
-        0
-      ],
-      "technique": 8
+  "Materials": {
+    "orig_09_-_Default": {
+      "Effect": "../shaders/NormalMapping.fx",
+      "Technique": "SpecularWithReflection20",
+      "Parameters": {
+        "lightDir": 0,
+        "ambientColor": [
+          0.313726,
+          0.313726,
+          0.313726,
+          1
+        ],
+        "diffuseColor": [
+          0.835294,
+          0.835294,
+          0.835294,
+          1
+        ],
+        "specularColor": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "shininess": [
+          32
+        ],
+        "diffuseTexture": "../textures/Schild_Kurve_links.tga",
+        "normalTexture": "../textures/Schild_Kurve_linksNormal.tga",
+        "reflectionCubeTexture": "../textures/SkyCubeMap.dds",
+        "NormalizeCubeTexture": "../textures/NormalizeCubeMap.dds",
+        "shadowCarColor": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "carHueColorChange": [
+          0
+        ]
+      }
     }
+  },
+  "MeshesMaterials": {
+    "Schild_Kurve_links": [
+      "orig_09_-_Default"
+    ]
   }
 }

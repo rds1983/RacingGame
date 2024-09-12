@@ -71,6 +71,11 @@ namespace RacingGame.Utility
 			return (ModelMeshPart)constructorInfo.Invoke(new object[0]);
 		}
 
+		public static void SetPrimitiveCount(this ModelMeshPart meshPart, int primitiveCount)
+		{
+			SetProperty(meshPart, "PrimitiveCount", primitiveCount);
+		}
+
 		public static void SetIndexBuffer(this ModelMeshPart meshPart, IndexBuffer indexBuffer)
 		{
 			SetProperty(meshPart, "IndexBuffer", indexBuffer);
