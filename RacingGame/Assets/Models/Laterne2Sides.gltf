@@ -1,0 +1,168 @@
+{
+    "asset": {
+        "version": "2.0",
+        "generator": "Open Asset Import Library (assimp v5.2.0)"
+    },
+    "extensionsUsed": [
+        "KHR_materials_pbrSpecularGlossiness",
+        "FB_ngon_encoding"
+    ],
+    "accessors": [
+        {
+            "bufferView": 0,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 238,
+            "type": "VEC3",
+            "max": [
+                51.722801208496097,
+                258.8416748046875,
+                12.953204154968262
+            ],
+            "min": [
+                -51.722801208496097,
+                0.0,
+                -12.953204154968262
+            ]
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 238,
+            "type": "VEC3",
+            "max": [
+                1.0,
+                0.9800001382827759,
+                1.0
+            ],
+            "min": [
+                -1.0,
+                -0.9995454549789429,
+                -1.0
+            ]
+        },
+        {
+            "bufferView": 2,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 238,
+            "type": "VEC2",
+            "max": [
+                0.9848880171775818,
+                0.9892709851264954
+            ],
+            "min": [
+                0.014014000073075295,
+                0.10510998964309693
+            ]
+        },
+        {
+            "bufferView": 3,
+            "byteOffset": 0,
+            "componentType": 5125,
+            "count": 636,
+            "type": "SCALAR",
+            "max": [
+                237
+            ],
+            "min": [
+                0
+            ]
+        }
+    ],
+    "buffers": [
+        {
+            "byteLength": 10160,
+            "uri": "Laterne2Sides.bin"
+        }
+    ],
+    "bufferViews": [
+        {
+            "buffer": 0,
+            "byteOffset": 0,
+            "byteLength": 2856,
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 2856,
+            "byteLength": 2856,
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 5712,
+            "byteLength": 1904,
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 7616,
+            "byteLength": 2544,
+            "target": 34963
+        }
+    ],
+    "materials": [
+        {
+            "name": "orig_01_-_Default",
+            "pbrMetallicRoughness": {
+                "metallicFactor": 0.0
+            },
+            "extensions": {
+                "KHR_materials_pbrSpecularGlossiness": {
+                    "glossinessFactor": 0.0
+                }
+            }
+        }
+    ],
+    "meshes": [
+        {
+            "name": "streetlamp",
+            "primitives": [
+                {
+                    "mode": 4,
+                    "material": 0,
+                    "indices": 3,
+                    "attributes": {
+                        "POSITION": 0,
+                        "NORMAL": 1,
+                        "TEXCOORD_0": 2
+                    }
+                }
+            ]
+        }
+    ],
+    "nodes": [
+        {
+            "name": "streetlamp",
+            "matrix": [
+                0.026875000447034837,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.026875000447034837,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.026875000447034837,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "mesh": 0
+        }
+    ],
+    "scenes": [
+        {
+            "nodes": [
+                0
+            ]
+        }
+    ],
+    "scene": 0
+}

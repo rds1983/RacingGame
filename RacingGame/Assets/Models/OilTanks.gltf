@@ -1,0 +1,167 @@
+{
+    "asset": {
+        "version": "2.0",
+        "generator": "Open Asset Import Library (assimp v5.2.0)"
+    },
+    "extensionsUsed": [
+        "KHR_materials_pbrSpecularGlossiness",
+        "FB_ngon_encoding"
+    ],
+    "accessors": [
+        {
+            "bufferView": 0,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 516,
+            "type": "VEC3",
+            "max": [
+                2.03200101852417,
+                7.132339000701904,
+                5.638800144195557
+            ],
+            "min": [
+                -4.332067966461182,
+                -2.300067901611328,
+                -2.2351999282836916
+            ]
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 516,
+            "type": "VEC3",
+            "max": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "min": [
+                -1.0,
+                -1.0,
+                -1.0
+            ]
+        },
+        {
+            "bufferView": 2,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 516,
+            "type": "VEC2",
+            "max": [
+                0.9945279955863953,
+                0.9869120121002197
+            ],
+            "min": [
+                0.013873999938368798,
+                0.015929996967315675
+            ]
+        },
+        {
+            "bufferView": 3,
+            "byteOffset": 0,
+            "componentType": 5125,
+            "count": 1608,
+            "type": "SCALAR",
+            "max": [
+                515
+            ],
+            "min": [
+                0
+            ]
+        }
+    ],
+    "buffers": [
+        {
+            "byteLength": 22944,
+            "uri": "OilTanks.bin"
+        }
+    ],
+    "bufferViews": [
+        {
+            "buffer": 0,
+            "byteOffset": 0,
+            "byteLength": 6192,
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 6192,
+            "byteLength": 6192,
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 12384,
+            "byteLength": 4128,
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 16512,
+            "byteLength": 6432,
+            "target": 34963
+        }
+    ],
+    "materials": [
+        {
+            "name": "PDX09_-_Default",
+            "pbrMetallicRoughness": {
+                "metallicFactor": 0.0
+            },
+            "extensions": {
+                "KHR_materials_pbrSpecularGlossiness": {
+                    "glossinessFactor": 0.0
+                }
+            }
+        }
+    ],
+    "meshes": [
+        {
+            "primitives": [
+                {
+                    "mode": 4,
+                    "material": 0,
+                    "indices": 3,
+                    "attributes": {
+                        "POSITION": 0,
+                        "NORMAL": 1,
+                        "TEXCOORD_0": 2
+                    }
+                }
+            ]
+        }
+    ],
+    "nodes": [
+        {
+            "name": "Oiltank01",
+            "matrix": [
+                3.359998941421509,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                3.359998941421509,
+                0.0,
+                0.0,
+                -3.359998941421509,
+                0.0,
+                0.0,
+                6.827517986297607,
+                18.09292221069336,
+                -8.008292198181153,
+                1.0
+            ],
+            "mesh": 0
+        }
+    ],
+    "scenes": [
+        {
+            "nodes": [
+                0
+            ]
+        }
+    ],
+    "scene": 0
+}

@@ -1,0 +1,43 @@
+{
+  "PDX03_-_Default": {
+    "Effect": "../shaders/NormalMapping.fx",
+    "Parameters": {
+      "lightDir": 0,
+      "ambientColor": [
+        0.45098,
+        0.45098,
+        0.45098,
+        1
+      ],
+      "diffuseColor": [
+        0.917647,
+        0.917647,
+        0.917647,
+        1
+      ],
+      "specularColor": [
+        0.411765,
+        0.411765,
+        0.411765,
+        1
+      ],
+      "shininess": [
+        16
+      ],
+      "diffuseTexture": "../textures/KaktusBenny.tga",
+      "normalTexture": "../textures/KaktusBennyNormal.tga",
+      "reflectionCubeTexture": "../textures/SkyCubeMap.dds",
+      "NormalizeCubeTexture": "../textures/NormalizeCubeMap.dds",
+      "shadowCarColor": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "carHueColorChange": [
+        0
+      ],
+      "technique": 6
+    }
+  }
+}

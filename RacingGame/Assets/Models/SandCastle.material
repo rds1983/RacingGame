@@ -1,0 +1,43 @@
+{
+  "PDX09_-_Default": {
+    "Effect": "../shaders/NormalMapping.fx",
+    "Parameters": {
+      "lightDir": 0,
+      "ambientColor": [
+        0.196078,
+        0.196078,
+        0.196078,
+        1
+      ],
+      "diffuseColor": [
+        0.819608,
+        0.819608,
+        0.819608,
+        1
+      ],
+      "specularColor": [
+        0.631373,
+        0.619608,
+        0.54902,
+        1
+      ],
+      "shininess": [
+        16
+      ],
+      "diffuseTexture": "../textures/Fort.tga",
+      "normalTexture": "../textures/FortNormal.tga",
+      "reflectionCubeTexture": "../textures/SkyCubeMap.dds",
+      "NormalizeCubeTexture": "../textures/NormalizeCubeMap.dds",
+      "shadowCarColor": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "carHueColorChange": [
+        0
+      ],
+      "technique": 6
+    }
+  }
+}

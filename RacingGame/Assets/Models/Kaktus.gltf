@@ -1,0 +1,168 @@
+{
+    "asset": {
+        "version": "2.0",
+        "generator": "Open Asset Import Library (assimp v5.2.0)"
+    },
+    "extensionsUsed": [
+        "KHR_materials_pbrSpecularGlossiness",
+        "FB_ngon_encoding"
+    ],
+    "accessors": [
+        {
+            "bufferView": 0,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 189,
+            "type": "VEC3",
+            "max": [
+                1.5019170045852662,
+                7.874000072479248,
+                0.9729710221290588
+            ],
+            "min": [
+                -2.216912031173706,
+                0.0,
+                -0.6096000075340271
+            ]
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 189,
+            "type": "VEC3",
+            "max": [
+                0.9997036457061768,
+                1.0,
+                0.9997036457061768
+            ],
+            "min": [
+                -0.9997036457061768,
+                -1.0,
+                -0.9997036457061768
+            ]
+        },
+        {
+            "bufferView": 2,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 189,
+            "type": "VEC2",
+            "max": [
+                0.9893109798431397,
+                0.9589040279388428
+            ],
+            "min": [
+                -0.004110000096261501,
+                0.09769797325134278
+            ]
+        },
+        {
+            "bufferView": 3,
+            "byteOffset": 0,
+            "componentType": 5125,
+            "count": 768,
+            "type": "SCALAR",
+            "max": [
+                188
+            ],
+            "min": [
+                0
+            ]
+        }
+    ],
+    "buffers": [
+        {
+            "byteLength": 9120,
+            "uri": "Kaktus_0.bin"
+        }
+    ],
+    "bufferViews": [
+        {
+            "buffer": 0,
+            "byteOffset": 0,
+            "byteLength": 2268,
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 2268,
+            "byteLength": 2268,
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 4536,
+            "byteLength": 1512,
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 6048,
+            "byteLength": 3072,
+            "target": 34963
+        }
+    ],
+    "materials": [
+        {
+            "name": "PDX09_-_Default",
+            "pbrMetallicRoughness": {
+                "metallicFactor": 0.0
+            },
+            "extensions": {
+                "KHR_materials_pbrSpecularGlossiness": {
+                    "glossinessFactor": 0.0
+                }
+            }
+        }
+    ],
+    "meshes": [
+        {
+            "name": "Kaktus",
+            "primitives": [
+                {
+                    "mode": 4,
+                    "material": 0,
+                    "indices": 3,
+                    "attributes": {
+                        "POSITION": 0,
+                        "NORMAL": 1,
+                        "TEXCOORD_0": 2
+                    }
+                }
+            ]
+        }
+    ],
+    "nodes": [
+        {
+            "name": "Kaktus",
+            "matrix": [
+                0.5401319861412048,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.5401319861412048,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.5401319861412048,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "mesh": 0
+        }
+    ],
+    "scenes": [
+        {
+            "nodes": [
+                0
+            ]
+        }
+    ],
+    "scene": 0
+}

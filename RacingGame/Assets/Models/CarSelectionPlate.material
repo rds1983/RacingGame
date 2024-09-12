@@ -1,0 +1,43 @@
+{
+  "orig_09_-_Default": {
+    "Effect": "../shaders/NormalMapping.fx",
+    "Parameters": {
+      "lightDir": 0,
+      "ambientColor": [
+        0.313726,
+        0.313726,
+        0.313726,
+        1
+      ],
+      "diffuseColor": [
+        0.654902,
+        0.654902,
+        0.654902,
+        1
+      ],
+      "specularColor": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "shininess": [
+        16
+      ],
+      "diffuseTexture": "../textures/CarSelectionPlate.tga",
+      "normalTexture": "../textures/CarSelectionPlateNormal.tga",
+      "reflectionCubeTexture": "../textures/SkyCubeMap.dds",
+      "NormalizeCubeTexture": "../textures/NormalizeCubeMap.dds",
+      "shadowCarColor": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "carHueColorChange": [
+        0
+      ],
+      "technique": 8
+    }
+  }
+}

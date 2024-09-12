@@ -1,0 +1,150 @@
+{
+    "asset": {
+        "version": "2.0",
+        "generator": "Open Asset Import Library (assimp v5.2.0)"
+    },
+    "extensionsUsed": [
+        "KHR_materials_pbrSpecularGlossiness",
+        "FB_ngon_encoding"
+    ],
+    "accessors": [
+        {
+            "bufferView": 0,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 183,
+            "type": "VEC3",
+            "max": [
+                2.6256818771362306,
+                8.704011917114258,
+                0.2783850133419037
+            ],
+            "min": [
+                -0.22853699326515199,
+                0.0,
+                -0.2783850133419037
+            ]
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 183,
+            "type": "VEC3",
+            "max": [
+                1.0,
+                0.9410890936851502,
+                1.0
+            ],
+            "min": [
+                -1.0,
+                -0.9410893321037293,
+                -1.0
+            ]
+        },
+        {
+            "bufferView": 2,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 183,
+            "type": "VEC2",
+            "max": [
+                0.9853429794311523,
+                0.9847540259361267
+            ],
+            "min": [
+                0.014657000079751015,
+                0.021157026290893556
+            ]
+        },
+        {
+            "bufferView": 3,
+            "byteOffset": 0,
+            "componentType": 5125,
+            "count": 636,
+            "type": "SCALAR",
+            "max": [
+                182
+            ],
+            "min": [
+                0
+            ]
+        }
+    ],
+    "buffers": [
+        {
+            "byteLength": 8400,
+            "uri": "Laterne.bin"
+        }
+    ],
+    "bufferViews": [
+        {
+            "buffer": 0,
+            "byteOffset": 0,
+            "byteLength": 2196,
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 2196,
+            "byteLength": 2196,
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 4392,
+            "byteLength": 1464,
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 5856,
+            "byteLength": 2544,
+            "target": 34963
+        }
+    ],
+    "materials": [
+        {
+            "name": "PDX20_-_Default",
+            "pbrMetallicRoughness": {
+                "metallicFactor": 0.0
+            },
+            "extensions": {
+                "KHR_materials_pbrSpecularGlossiness": {
+                    "glossinessFactor": 0.0
+                }
+            }
+        }
+    ],
+    "meshes": [
+        {
+            "name": "Cylinder01",
+            "primitives": [
+                {
+                    "mode": 4,
+                    "material": 0,
+                    "indices": 3,
+                    "attributes": {
+                        "POSITION": 0,
+                        "NORMAL": 1,
+                        "TEXCOORD_0": 2
+                    }
+                }
+            ]
+        }
+    ],
+    "nodes": [
+        {
+            "name": "Cylinder01",
+            "mesh": 0
+        }
+    ],
+    "scenes": [
+        {
+            "nodes": [
+                0
+            ]
+        }
+    ],
+    "scene": 0
+}

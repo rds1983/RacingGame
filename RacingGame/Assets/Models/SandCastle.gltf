@@ -1,0 +1,167 @@
+{
+    "asset": {
+        "version": "2.0",
+        "generator": "Open Asset Import Library (assimp v5.2.0)"
+    },
+    "extensionsUsed": [
+        "KHR_materials_pbrSpecularGlossiness",
+        "FB_ngon_encoding"
+    ],
+    "accessors": [
+        {
+            "bufferView": 0,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 1560,
+            "type": "VEC3",
+            "max": [
+                7.8231987953186039,
+                4.730276107788086,
+                4.775200843811035
+            ],
+            "min": [
+                -1.9811999797821046,
+                0.0,
+                -5.029200077056885
+            ]
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 1560,
+            "type": "VEC3",
+            "max": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "min": [
+                -1.0,
+                -1.0,
+                -1.0
+            ]
+        },
+        {
+            "bufferView": 2,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 1560,
+            "type": "VEC2",
+            "max": [
+                0.9925510287284851,
+                2.2834091186523439
+            ],
+            "min": [
+                -0.7866330146789551,
+                0.0073549747467041019
+            ]
+        },
+        {
+            "bufferView": 3,
+            "byteOffset": 0,
+            "componentType": 5125,
+            "count": 2964,
+            "type": "SCALAR",
+            "max": [
+                1559
+            ],
+            "min": [
+                0
+            ]
+        }
+    ],
+    "buffers": [
+        {
+            "byteLength": 61776,
+            "uri": "SandCastle.bin"
+        }
+    ],
+    "bufferViews": [
+        {
+            "buffer": 0,
+            "byteOffset": 0,
+            "byteLength": 18720,
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 18720,
+            "byteLength": 18720,
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 37440,
+            "byteLength": 12480,
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 49920,
+            "byteLength": 11856,
+            "target": 34963
+        }
+    ],
+    "materials": [
+        {
+            "name": "PDX09_-_Default",
+            "pbrMetallicRoughness": {
+                "metallicFactor": 0.0
+            },
+            "extensions": {
+                "KHR_materials_pbrSpecularGlossiness": {
+                    "glossinessFactor": 0.0
+                }
+            }
+        }
+    ],
+    "meshes": [
+        {
+            "primitives": [
+                {
+                    "mode": 4,
+                    "material": 0,
+                    "indices": 3,
+                    "attributes": {
+                        "POSITION": 0,
+                        "NORMAL": 1,
+                        "TEXCOORD_0": 2
+                    }
+                }
+            ]
+        }
+    ],
+    "nodes": [
+        {
+            "name": "Fort",
+            "matrix": [
+                3.5,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                3.5,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                3.5,
+                0.0,
+                -10.668000221252442,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "mesh": 0
+        }
+    ],
+    "scenes": [
+        {
+            "nodes": [
+                0
+            ]
+        }
+    ],
+    "scene": 0
+}

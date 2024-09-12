@@ -1,0 +1,167 @@
+{
+    "asset": {
+        "version": "2.0",
+        "generator": "Open Asset Import Library (assimp v5.2.0)"
+    },
+    "extensionsUsed": [
+        "KHR_materials_pbrSpecularGlossiness",
+        "FB_ngon_encoding"
+    ],
+    "accessors": [
+        {
+            "bufferView": 0,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 434,
+            "type": "VEC3",
+            "max": [
+                2.778736114501953,
+                0.5080000162124634,
+                2.778693914413452
+            ],
+            "min": [
+                -2.778736114501953,
+                0.20268400013446809,
+                -2.778693914413452
+            ]
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 434,
+            "type": "VEC3",
+            "max": [
+                0.9807535409927368,
+                1.0,
+                0.9807527661323547
+            ],
+            "min": [
+                -0.9807535409927368,
+                -1.0,
+                -0.9807527661323547
+            ]
+        },
+        {
+            "bufferView": 2,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 434,
+            "type": "VEC2",
+            "max": [
+                0.9914090037345886,
+                1.0
+            ],
+            "min": [
+                0.0,
+                0.004092991352081299
+            ]
+        },
+        {
+            "bufferView": 3,
+            "byteOffset": 0,
+            "componentType": 5125,
+            "count": 1800,
+            "type": "SCALAR",
+            "max": [
+                433
+            ],
+            "min": [
+                0
+            ]
+        }
+    ],
+    "buffers": [
+        {
+            "byteLength": 21088,
+            "uri": "CarSelectionPlate_0.bin"
+        }
+    ],
+    "bufferViews": [
+        {
+            "buffer": 0,
+            "byteOffset": 0,
+            "byteLength": 5208,
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 5208,
+            "byteLength": 5208,
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 10416,
+            "byteLength": 3472,
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 13888,
+            "byteLength": 7200,
+            "target": 34963
+        }
+    ],
+    "materials": [
+        {
+            "name": "orig_09_-_Default",
+            "pbrMetallicRoughness": {
+                "metallicFactor": 0.0
+            },
+            "extensions": {
+                "KHR_materials_pbrSpecularGlossiness": {
+                    "glossinessFactor": 0.0
+                }
+            }
+        }
+    ],
+    "meshes": [
+        {
+            "primitives": [
+                {
+                    "mode": 4,
+                    "material": 0,
+                    "indices": 3,
+                    "attributes": {
+                        "POSITION": 0,
+                        "NORMAL": 1,
+                        "TEXCOORD_0": 2
+                    }
+                }
+            ]
+        }
+    ],
+    "nodes": [
+        {
+            "name": "CarSelectionPlate",
+            "matrix": [
+                1.2031749486923218,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.2031749486923218,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.2031749486923218,
+                0.0,
+                0.0,
+                -0.6103560924530029,
+                0.0,
+                1.0
+            ],
+            "mesh": 0
+        }
+    ],
+    "scenes": [
+        {
+            "nodes": [
+                0
+            ]
+        }
+    ],
+    "scene": 0
+}

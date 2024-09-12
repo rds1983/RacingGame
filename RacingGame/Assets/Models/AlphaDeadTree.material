@@ -1,0 +1,84 @@
+{
+  "PDX01_-_Defaultb": {
+    "Effect": "../shaders/NormalMapping.fx",
+    "Parameters": {
+      "lightDir": 0,
+      "ambientColor": [
+        0.333333,
+        0.333333,
+        0.333333,
+        1
+      ],
+      "diffuseColor": [
+        0.839216,
+        0.839216,
+        0.839216,
+        1
+      ],
+      "specularColor": [
+        0.54902,
+        0.54902,
+        0.54902,
+        1
+      ],
+      "shininess": [
+        4
+      ],
+      "diffuseTexture": "../textures/Ast.tga",
+      "normalTexture": "../textures/Ast_Normal.tga",
+      "reflectionCubeTexture": "../textures/SkyCubeMap.dds",
+      "NormalizeCubeTexture": "../textures/NormalizeCubeMap.dds",
+      "shadowCarColor": [
+        1,
+        1,
+        1,
+        0.15
+      ],
+      "carHueColorChange": [
+        0
+      ],
+      "technique": 6
+    }
+  },
+  "PDX01_-_Default": {
+    "Effect": "../shaders/NormalMapping.fx",
+    "Parameters": {
+      "lightDir": 0,
+      "ambientColor": [
+        0.243137,
+        0.243137,
+        0.243137,
+        1
+      ],
+      "diffuseColor": [
+        0.827451,
+        0.827451,
+        0.827451,
+        1
+      ],
+      "specularColor": [
+        0.615686,
+        0.615686,
+        0.615686,
+        1
+      ],
+      "shininess": [
+        21
+      ],
+      "diffuseTexture": "../textures/Trunk.tga",
+      "normalTexture": "../textures/Trunk_Normal.tga",
+      "reflectionCubeTexture": "../textures/SkyCubeMap.dds",
+      "NormalizeCubeTexture": "../textures/NormalizeCubeMap.dds",
+      "shadowCarColor": [
+        1,
+        1,
+        1,
+        0.15
+      ],
+      "carHueColorChange": [
+        0
+      ],
+      "technique": 6
+    }
+  }
+}
