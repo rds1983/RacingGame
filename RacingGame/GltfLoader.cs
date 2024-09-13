@@ -535,6 +535,7 @@ namespace RacingGame
 				var modelBone = XNA.CreateModelBone();
 
 				modelBone.SetName(glbNode.Name);
+				modelBone.SetIndex(i);
 
 				var defaultTranslation = glbNode.Translation != null ? glbNode.Translation.ToVector3() : Vector3.Zero;
 				var defaultScale = glbNode.Scale != null ? glbNode.Scale.ToVector3() : Vector3.One;
@@ -553,7 +554,11 @@ namespace RacingGame
 					var mesh = _meshes[glbNode.Mesh.Value];
 					modelBone.AddMesh(mesh);
 
-					mesh.SetName(modelBone.Name);
+					if (string.IsNullOrEmpty(mesh.Name))
+					{
+						mesh.SetName(modelBone.Name);
+					}
+
 					mesh.SetParentBone(modelBone);
 				}
 

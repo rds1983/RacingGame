@@ -114,6 +114,11 @@ namespace RacingGame.Utility
 			SetProperty(bone, "Name", name);
 		}
 
+		public static void SetIndex(this ModelBone bone, int index)
+		{
+			SetProperty(bone, "Index", index);
+		}
+
 		public static void AddChild(this ModelBone bone, ModelBone child)
 		{
 			var methodInfo = typeof(ModelBone).GetMethod("AddChild", BindingFlags.Instance | BindingFlags.NonPublic);
