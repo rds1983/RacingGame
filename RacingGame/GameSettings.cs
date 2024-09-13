@@ -328,7 +328,7 @@ namespace RacingGame.Properties
         /// <summary>
         /// Fullscreen
         /// </summary>
-        bool fullscreen = false;
+        bool fullscreen = true;
         /// <summary>
         /// Fullscreen
         /// </summary>

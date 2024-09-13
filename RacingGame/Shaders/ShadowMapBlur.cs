@@ -18,240 +18,256 @@ using RacingGame.Helpers;
 
 namespace RacingGame.Shaders
 {
-    /// <summary>
-    /// ShadowMapBlur based on PostScreenBlur to blur the final shadow map
-    /// output for a more smooth view on the screen.
-    /// </summary>
-    public class ShadowMapBlur : ShaderEffect
-    {
-        static readonly BlendState ZeroSourceBlend = new BlendState()
-        {
-            AlphaBlendFunction = BlendFunction.Add,
-            AlphaSourceBlend = Blend.Zero,
-            ColorSourceBlend = Blend.Zero,
-            AlphaDestinationBlend = Blend.SourceAlpha,
-            ColorDestinationBlend = Blend.SourceColor
-        };
+	/// <summary>
+	/// ShadowMapBlur based on PostScreenBlur to blur the final shadow map
+	/// output for a more smooth view on the screen.
+	/// </summary>
+	public class ShadowMapBlur : ShaderEffect
+	{
+		static readonly BlendState ZeroSourceBlend = new BlendState()
+		{
+			AlphaBlendFunction = BlendFunction.Add,
+			AlphaSourceBlend = Blend.Zero,
+			ColorSourceBlend = Blend.Zero,
+			AlphaDestinationBlend = Blend.SourceAlpha,
+			ColorDestinationBlend = Blend.SourceColor
+		};
 
-        #region Variables
-        /// <summary>
-        /// The shader effect filename for this shader.
-        /// </summary>
-        private const string Filename = "PostScreenShadowBlur.fx";
+		#region Variables
+		/// <summary>
+		/// The shader effect filename for this shader.
+		/// </summary>
+		private const string Filename = "PostScreenShadowBlur.fx";
 
-        /// <summary>
-        /// Effect handles for window size and scene map.
-        /// </summary>
-        private EffectParameter windowSize,
-            sceneMap,
-            blurMap;
+		/// <summary>
+		/// Effect handles for window size and scene map.
+		/// </summary>
+		private EffectParameter windowSize,
+			sceneMap,
+			blurMap;
 
-        /// <summary>
-        /// Links to the render to texture instances.
-        /// </summary>
-        private RenderToTexture sceneMapTexture,
-            blurMapTexture;
+		/// <summary>
+		/// Links to the render to texture instances.
+		/// </summary>
+		private RenderToTexture sceneMapTexture,
+			blurMapTexture;
 
-        /// <summary>
-        /// Scene map texture
-        /// </summary>
-        /// <returns>Render to texture</returns>
-        public RenderToTexture SceneMapTexture
-        {
-            get
-            {
-                return sceneMapTexture;
-            }
-        }
+		/// <summary>
+		/// Scene map texture
+		/// </summary>
+		/// <returns>Render to texture</returns>
+		public RenderToTexture SceneMapTexture
+		{
+			get
+			{
+				return sceneMapTexture;
+			}
+		}
 
-        /// <summary>
-        /// Blur map texture
-        /// </summary>
-        /// <returns>Render to texture</returns>
-        public RenderToTexture BlurMapTexture
-        {
-            get
-            {
-                return blurMapTexture;
-            }
-        }
-        #endregion
+		/// <summary>
+		/// Blur map texture
+		/// </summary>
+		/// <returns>Render to texture</returns>
+		public RenderToTexture BlurMapTexture
+		{
+			get
+			{
+				return blurMapTexture;
+			}
+		}
+		#endregion
 
-        #region Create
-        /// <summary>
-        /// Create shadow map screen blur shader.
-        /// obs, using full size again: But only use 1/4 of the screen!
-        /// </summary>
-        public ShadowMapBlur()
-            : base(Filename)
-        {
-            // Scene map texture
-            sceneMapTexture = new RenderToTexture(
-                //RenderToTexture.SizeType.FullScreen);
-                //improve performance:
-                RenderToTexture.SizeType.HalfScreen);
-            blurMapTexture = new RenderToTexture(
-                //RenderToTexture.SizeType.FullScreen);
-                //improve performance:
-                RenderToTexture.SizeType.HalfScreen);
-        }
-        #endregion
+		#region Create
+		/// <summary>
+		/// Create shadow map screen blur shader.
+		/// obs, using full size again: But only use 1/4 of the screen!
+		/// </summary>
+		public ShadowMapBlur()
+			: base(Filename)
+		{
+			// Scene map texture
+			sceneMapTexture = new RenderToTexture(
+				//RenderToTexture.SizeType.FullScreen);
+				//improve performance:
+				RenderToTexture.SizeType.HalfScreen);
+			blurMapTexture = new RenderToTexture(
+				//RenderToTexture.SizeType.FullScreen);
+				//improve performance:
+				RenderToTexture.SizeType.HalfScreen);
 
-        #region Get parameters
-        /// <summary>
-        /// Reload
-        /// </summary>
-        protected override void GetParameters()
-        {
-            // Can't get parameters if loading failed!
-            if (effect == null)
-                return;
+#if MONOGAME
+			// Due to this bug: https://github.com/MonoGame/MonoGame/issues/8491
+			// We have to set values of the float array again in C#
+			effect.Parameters["Weights8"].SetValue(new float[]
+			{
+				0.035f,
+				0.09f,
+				0.125f,
+				0.25f,
+				0.25f,
+				0.125f,
+				0.09f,
+				0.035f
+			});
+#endif
+		}
+		#endregion
 
-            windowSize = effect.Parameters["windowSize"];
-            sceneMap = effect.Parameters["sceneMap"];
-            blurMap = effect.Parameters["blurMap"];
+		#region Get parameters
+		/// <summary>
+		/// Reload
+		/// </summary>
+		protected override void GetParameters()
+		{
+			// Can't get parameters if loading failed!
+			if (effect == null)
+				return;
 
-            // We need both windowSize and sceneMap.
-            if (windowSize == null ||
-                sceneMap == null)
-                throw new NotSupportedException("windowSize and sceneMap must be " +
-                    "valid in PostScreenShader=" + Filename);
-        }
-        #endregion
+			windowSize = effect.Parameters["windowSize"];
+			sceneMap = effect.Parameters["sceneMap"];
+			blurMap = effect.Parameters["blurMap"];
 
-        #region RenderShadows
-        /// <summary>
-        /// Render shadows
-        /// </summary>
-        /// <param name="renderCode">Render code</param>
-        public void RenderShadows(BaseGame.RenderHandler renderCode)
-        {
-            if (renderCode == null)
-                throw new ArgumentNullException("renderCode");
+			// We need both windowSize and sceneMap.
+			if (windowSize == null ||
+				sceneMap == null)
+				throw new NotSupportedException("windowSize and sceneMap must be " +
+					"valid in PostScreenShader=" + Filename);
+		}
+		#endregion
 
-            // Render into our scene map texture
-            sceneMapTexture.SetRenderTarget();
+		#region RenderShadows
+		/// <summary>
+		/// Render shadows
+		/// </summary>
+		/// <param name="renderCode">Render code</param>
+		public void RenderShadows(BaseGame.RenderHandler renderCode)
+		{
+			if (renderCode == null)
+				throw new ArgumentNullException("renderCode");
 
-            // Clear render target
-            sceneMapTexture.Clear(Color.White);
+			// Render into our scene map texture
+			sceneMapTexture.SetRenderTarget();
 
-            // Render everything
-            renderCode();
+			// Clear render target
+			sceneMapTexture.Clear(Color.White);
 
-            // Resolve render target
-            sceneMapTexture.Resolve();
+			// Render everything
+			renderCode();
 
-            // Restore back buffer as render target
-            BaseGame.ResetRenderTarget(true);
-        }
-        #endregion
+			// Resolve render target
+			sceneMapTexture.Resolve();
 
-        #region ShowShadows
-        /// <summary>
-        /// Show shadows with help of our blur map shader
-        /// </summary>
-        public void RenderShadows()
-        {
-            // Only apply post screen blur if texture is valid and effect are valid
-            if (sceneMapTexture == null ||
-                Valid == false ||
-                // If the shadow scene map is not yet filled, there is no point
-                // continuing here ...
-                sceneMapTexture.XnaTexture == null)
-                return;
+			// Restore back buffer as render target
+			BaseGame.ResetRenderTarget(true);
+		}
+		#endregion
 
-            // Don't use or write to the z buffer
-            BaseGame.Device.DepthStencilState = DepthStencilState.None;
-            // Disable alpha for the first pass
-            BaseGame.Device.BlendState = BlendState.Opaque;
+		#region ShowShadows
+		/// <summary>
+		/// Show shadows with help of our blur map shader
+		/// </summary>
+		public void RenderShadows()
+		{
+			// Only apply post screen blur if texture is valid and effect are valid
+			if (sceneMapTexture == null ||
+				Valid == false ||
+				// If the shadow scene map is not yet filled, there is no point
+				// continuing here ...
+				sceneMapTexture.XnaTexture == null)
+				return;
 
-            if (windowSize != null)
-                windowSize.SetValue(
-                    new Vector2 ( sceneMapTexture.Width, sceneMapTexture.Height ));
-            if (sceneMap != null)
-                sceneMap.SetValue(sceneMapTexture.XnaTexture);
+			// Don't use or write to the z buffer
+			BaseGame.Device.DepthStencilState = DepthStencilState.None;
+			// Disable alpha for the first pass
+			BaseGame.Device.BlendState = BlendState.Opaque;
 
-            effect.CurrentTechnique = effect.Techniques["ScreenAdvancedBlur20"];
+			if (windowSize != null)
+				windowSize.SetValue(
+					new Vector2(sceneMapTexture.Width, sceneMapTexture.Height));
+			if (sceneMap != null)
+				sceneMap.SetValue(sceneMapTexture.XnaTexture);
 
-            // We must have exactly 2 passes!
-            if (effect.CurrentTechnique.Passes.Count != 2)
-                throw new InvalidOperationException(
-                    "This shader should have exactly 2 passes!");
+			effect.CurrentTechnique = effect.Techniques["ScreenAdvancedBlur20"];
 
-            // Just start pass 0
-            
-                blurMapTexture.SetRenderTarget();
+			// We must have exactly 2 passes!
+			if (effect.CurrentTechnique.Passes.Count != 2)
+				throw new InvalidOperationException(
+					"This shader should have exactly 2 passes!");
 
-                EffectPass effectPass = effect.CurrentTechnique.Passes[0];
-                effectPass.Apply();
-                VBScreenHelper.Render();
+			// Just start pass 0
+
+			blurMapTexture.SetRenderTarget();
+
+			EffectPass effectPass = effect.CurrentTechnique.Passes[0];
+			effectPass.Apply();
+			VBScreenHelper.Render();
 
 
-            blurMapTexture.Resolve();
-            BaseGame.ResetRenderTarget(false);
+			blurMapTexture.Resolve();
+			BaseGame.ResetRenderTarget(false);
 
-            // Restore z buffer state
-            BaseGame.Device.DepthStencilState = DepthStencilState.Default;
-            // Set u/v addressing back to wrap
-            BaseGame.Device.SamplerStates[0] = SamplerState.LinearWrap;
-            // Restore normal alpha blending
-            //BaseGame.Device.RenderState.BlendFunction = BlendFunction.Add;
-            BaseGame.SetCurrentAlphaMode(BaseGame.AlphaMode.Default);
-        }
+			// Restore z buffer state
+			BaseGame.Device.DepthStencilState = DepthStencilState.Default;
+			// Set u/v addressing back to wrap
+			BaseGame.Device.SamplerStates[0] = SamplerState.LinearWrap;
+			// Restore normal alpha blending
+			//BaseGame.Device.RenderState.BlendFunction = BlendFunction.Add;
+			BaseGame.SetCurrentAlphaMode(BaseGame.AlphaMode.Default);
+		}
 
-        /// <summary>
-        /// Show shadows with help of our blur map shader
-        /// </summary>
-        public void ShowShadows()
-        {
-            // Only apply post screen blur if texture is valid and effect are valid
-            if (blurMapTexture == null ||
-                Valid == false ||
-                // If the shadow scene map is not yet filled, there is no point
-                // continuing here ...
-                blurMapTexture.XnaTexture == null)
-                return;
+		/// <summary>
+		/// Show shadows with help of our blur map shader
+		/// </summary>
+		public void ShowShadows()
+		{
+			// Only apply post screen blur if texture is valid and effect are valid
+			if (blurMapTexture == null ||
+				Valid == false ||
+				// If the shadow scene map is not yet filled, there is no point
+				// continuing here ...
+				blurMapTexture.XnaTexture == null)
+				return;
 
-            // Don't use or write to the z buffer
-            BaseGame.Device.DepthStencilState = DepthStencilState.None;
+			// Don't use or write to the z buffer
+			BaseGame.Device.DepthStencilState = DepthStencilState.None;
 
-            // Make sure we clamp everything to 0-1
-            BaseGame.Device.SamplerStates[0] = SamplerState.LinearClamp;
+			// Make sure we clamp everything to 0-1
+			BaseGame.Device.SamplerStates[0] = SamplerState.LinearClamp;
 
-            // Restore back buffer as render target
-            //not required: BaseGame.ResetRenderTarget(false);
+			// Restore back buffer as render target
+			//not required: BaseGame.ResetRenderTarget(false);
 
-            if (blurMap != null)
-                blurMap.SetValue(blurMapTexture.XnaTexture);
+			if (blurMap != null)
+				blurMap.SetValue(blurMapTexture.XnaTexture);
 
-            effect.CurrentTechnique = effect.Techniques["ScreenAdvancedBlur20"];
+			effect.CurrentTechnique = effect.Techniques["ScreenAdvancedBlur20"];
 
-            // We must have exactly 2 passes!
-            if (effect.CurrentTechnique.Passes.Count != 2)
-                throw new InvalidOperationException(
-                    "This shader should have exactly 2 passes!");
+			// We must have exactly 2 passes!
+			if (effect.CurrentTechnique.Passes.Count != 2)
+				throw new InvalidOperationException(
+					"This shader should have exactly 2 passes!");
 
-            // Render second pass
+			// Render second pass
 
-            // Use ZeroSourceBlend alpha mode for the final result
-            BaseGame.Device.BlendState = ZeroSourceBlend;
-                /*BaseGame.Device.RenderState.AlphaBlendEnable = true;
-                BaseGame.Device.RenderState.AlphaBlendOperation = BlendFunction.Add;
-                BaseGame.Device.RenderState.SourceBlend = Blend.Zero;
-                BaseGame.Device.RenderState.DestinationBlend = Blend.SourceColor;*/
+			// Use ZeroSourceBlend alpha mode for the final result
+			BaseGame.Device.BlendState = ZeroSourceBlend;
+			/*BaseGame.Device.RenderState.AlphaBlendEnable = true;
+			BaseGame.Device.RenderState.AlphaBlendOperation = BlendFunction.Add;
+			BaseGame.Device.RenderState.SourceBlend = Blend.Zero;
+			BaseGame.Device.RenderState.DestinationBlend = Blend.SourceColor;*/
 
-                EffectPass effectPass = effect.CurrentTechnique.Passes[1];
-                effectPass.Apply();
-                VBScreenHelper.Render();
+			EffectPass effectPass = effect.CurrentTechnique.Passes[1];
+			effectPass.Apply();
+			VBScreenHelper.Render();
 
-            // Restore z buffer state
-            BaseGame.Device.DepthStencilState = DepthStencilState.Default;
-            // Set u/v addressing back to wrap
-            BaseGame.Device.SamplerStates[0] = SamplerState.LinearWrap;
-            // Restore normal alpha blending
-            //BaseGame.Device.RenderState.BlendFunction = BlendFunction.Add;
-            BaseGame.SetCurrentAlphaMode(BaseGame.AlphaMode.Default);
-        }
-        #endregion
-    }
+			// Restore z buffer state
+			BaseGame.Device.DepthStencilState = DepthStencilState.Default;
+			// Set u/v addressing back to wrap
+			BaseGame.Device.SamplerStates[0] = SamplerState.LinearWrap;
+			// Restore normal alpha blending
+			//BaseGame.Device.RenderState.BlendFunction = BlendFunction.Add;
+			BaseGame.SetCurrentAlphaMode(BaseGame.AlphaMode.Default);
+		}
+		#endregion
+	}
 }
