@@ -1,3 +1,5 @@
+#include "Macros.fxh"
+
 // Simple shader for RacingGame
 float4x4 worldViewProj : WorldViewProjection;
 float4x4 world : World;
@@ -106,25 +108,6 @@ float4 PS_Diffuse(VertexOutput_Diffuse In) : COLOR
     return diffuseTexture * diffAmbColor;
 }
 
-technique Diffuse
-{
-    pass P0
-    {
-        VertexShader = compile vs_1_1 VS_Diffuse();
-        PixelShader  = compile ps_2_0 PS_Diffuse();
-    }
-}
-
-// No need to write new shader for ps20
-technique Diffuse20
-{
-    pass P0
-    {
-        VertexShader = compile vs_2_0 VS_Diffuse();
-        PixelShader  = compile ps_2_0 PS_Diffuse();
-    }
-}
-
 // -----------------------------------------------------
 
 // Vertex shader for ps_1_1 (specular is just not as strong)
@@ -177,15 +160,6 @@ float4 PS_SpecularPerPixel(VertexOutput_SpecularPerPixel In) : COLOR
         spec * specularColor * diffuseTexture.a;
 }
 
-technique SpecularPerPixel
-{
-    pass P0
-    {
-        VertexShader = compile vs_1_1 VS_SpecularPerPixel();
-        PixelShader  = compile ps_2_0 PS_SpecularPerPixel();
-    }
-}
-
 //-------------------------------------
 
 // Vertex shader
@@ -222,15 +196,6 @@ float4 PS_SpecularPerPixel20(VertexOutput_SpecularPerPixel In) : COLOR
         specular * specularColor;
 }
 
-technique SpecularPerPixel20
-{
-    pass P0
-    {
-        VertexShader = compile vs_2_0 VS_SpecularPerPixel20();
-        PixelShader = compile ps_2_0 PS_SpecularPerPixel20();
-    }
-}
-
 //---------------------------------------------------
 
 // vertex shader output structure
@@ -259,6 +224,11 @@ float4 PS_ShadowCar20() : COLOR
     return shadowCarColor;
 }
 
+TECHNIQUE(Diffuse, VS_Diffuse, PS_Diffuse);
+TECHNIQUE(Diffuse20, VS_Diffuse, PS_Diffuse);
+TECHNIQUE(SpecularPerPixel, VS_SpecularPerPixel, PS_SpecularPerPixel);
+TECHNIQUE(SpecularPerPixel20, VS_SpecularPerPixel20, PS_SpecularPerPixel20);
+
 technique ShadowCar
 {
     pass P0
@@ -267,8 +237,8 @@ technique ShadowCar
         AlphaBlendEnable = true;
         SrcBlend = SrcAlpha;
         DestBlend = One;
-        VertexShader = compile vs_1_1 VS_ShadowCar20();
-        PixelShader  = compile ps_2_0 PS_ShadowCar20();
+        VertexShader = compile VS_PROFILE VS_ShadowCar20();
+        PixelShader  = compile PS_PROFILE PS_ShadowCar20();
     }
 }
 
@@ -280,7 +250,7 @@ technique ShadowCar20
         AlphaBlendEnable = true;
         SrcBlend = SrcAlpha;
         DestBlend = One;
-        VertexShader = compile vs_1_1 VS_ShadowCar20();
-        PixelShader  = compile ps_2_0 PS_ShadowCar20();
+        VertexShader = compile VS_PROFILE VS_ShadowCar20();
+        PixelShader  = compile PS_PROFILE PS_ShadowCar20();
     }
 }

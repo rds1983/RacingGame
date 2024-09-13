@@ -1,3 +1,5 @@
+#include "Macros.fxh"
+
 string description = "Reflection shader for glass materials in RacingGame";
 
 // Variables that are provided by the application.
@@ -7,60 +9,24 @@ float4x4 viewProj              : ViewProjection;
 float4x4 world                 : World;
 float4x4 viewInverse           : ViewInverse;
 
-float3 lightDir : Direction
-<
-    string UIName = "Light Direction";
-    string Object = "DirectionalLight";
-    string Space = "World";
-> = {1.0f, -1.0f, 1.0f};
+float3 lightDir = {1.0f, -1.0f, 1.0f};
 
 // The ambient, diffuse and specular colors are pre-multiplied with the light color!
-float4 ambientColor : Ambient
-<
-    string UIName = "Ambient Color";
-    string Space = "material";
-> = {0.15f, 0.15f, 0.15f, 1.0f};
+float4 ambientColor = {0.15f, 0.15f, 0.15f, 1.0f};
 
-float4 diffuseColor : Diffuse
-<
-    string UIName = "Diffuse Color";
-    string Space = "material";
-> = {0.25f, 0.25f, 0.25f, 1.0f};
+float4 diffuseColor = {0.25f, 0.25f, 0.25f, 1.0f};
 
-float4 specularColor : Specular
-<
-    string UIName = "Specular Color";
-    string Space = "material";
-> = {1.0f, 1.0f, 1.0f, 1.0f};
+float4 specularColor = {1.0f, 1.0f, 1.0f, 1.0f};
 
-float shininess : SpecularPower
-<
-    string UIName = "Specular Power";
-    string UIWidget = "slider";
-    float UIMin = 1.0;
-    float UIMax = 128.0;
-    float UIStep = 1.0;
-> = 24.0;
+float shininess = 24.0;
 
-float alphaFactor
-<
-    string UIName = "Alpha factor";
-    string UIWidget = "slider";
-    float UIMin = 0.0;
-    float UIMax = 1.0;
-    float UIStep = 0.01;
-> = 0.66f;
+float alphaFactor = 0.66f;
 
 float fresnelBias = 0.5f;
 float fresnelPower = 1.5f;
 float reflectionAmount = 1.0f;
 
-texture reflectionCubeTexture : Environment
-<
-    string UIName = "Reflection cube map";
-    string ResourceType = "CUBE";
-    string ResourceName = "SkyCubeMap.dds";
->;
+texture reflectionCubeTexture;
 samplerCUBE reflectionCubeTextureSampler = sampler_state
 {
     Texture = <reflectionCubeTexture>;
@@ -117,73 +83,6 @@ struct VertexOutput_Texture
     float3 normal       : TEXCOORD2;
     float3 halfVec        : TEXCOORD3;
 };
-
-// vertex shader
-VertexOutput_Texture VS_ReflectionSpecular(VertexInput In)
-{
-    VertexOutput_Texture Out;
-    Out.pos = TransformPosition(In.pos);
-    float3 normal = CalcNormalVector(In.normal);
-    float3 viewVec = normalize(GetCameraPos() - GetWorldPos(In.pos));
-    float3 R = reflect(-viewVec, normal);
-    R = float3(R.x, R.z, R.y);
-    Out.cubeTexCoord = R;
-    
-    // Determine the eye vector
-    float3 worldEyePos = GetCameraPos();
-    float3 worldVertPos = GetWorldPos(In.pos);
-    
-    // Calc normal vector
-    Out.normal = 0.5 + 0.5 * CalcNormalVector(In.normal);
-    // Eye vector
-    float3 eyeVec = normalize(worldEyePos - worldVertPos);
-    // Half angle vector
-    Out.halfVec = 0.5 + 0.5 *
-        normalize(eyeVec + lightDir);
-
-    return Out;
-}
-
-float4 PS_ReflectionSpecular(VertexOutput_Texture In) : COLOR
-{
-    // Convert colors back to vectors. Without normalization it is
-    // a bit faster (2 instructions less), but not as correct!
-    float3 normal = 2.0 * (saturate(In.normal)-0.5);
-    float3 halfVec = 2.0 * (saturate(In.halfVec)-0.5);
-
-    // Diffuse factor
-    float diff = saturate(dot(normal, lightDir));
-    // Specular factor
-    float spec = saturate(dot(normal, halfVec));
-    //max. possible pow fake with mults here: spec = pow(spec, 8);
-    //same as: spec = spec*spec*spec*spec*spec*spec*spec*spec;
-
-    // (saturate(4*(dot(N,H)^2-0.75))^2*2 is a close approximation
-    // to pow(dot(N,H), 16). I use something like
-    // (saturate(4*(dot(N,H)^4-0.75))^2*2 for approx. pow(dot(N,H), 32)
-    spec = pow(saturate(4*(pow(spec, 2)-0.795)), 2);
-
-    // Output the color
-    float4 diffAmbColor = ambientColor + diff * diffuseColor;
-
-    float3 reflect = In.cubeTexCoord;
-    half4 reflColor = texCUBE(reflectionCubeTextureSampler, reflect);
-    float4 ret = reflColor * reflectionAmount + diffAmbColor;
-    ret.a = alphaFactor;
-    return ret + spec * specularColor;
-}
-
-technique ReflectionSpecular
-{
-    pass P0
-    {
-        AlphaBlendEnable = true;
-        SrcBlend = SrcAlpha;
-        DestBlend = InvSrcAlpha;    
-        VertexShader = compile vs_1_1 VS_ReflectionSpecular();
-        PixelShader  = compile ps_2_0 PS_ReflectionSpecular();
-    }
-}
 
 //----------------------------------------------------
 
@@ -245,7 +144,7 @@ technique ReflectionSpecular20
         SrcBlend = SrcAlpha;
         DestBlend = InvSrcAlpha;
         
-        VertexShader = compile vs_1_1 VS_ReflectionSpecular20();
-        PixelShader  = compile ps_2_0 PS_ReflectionSpecular20();
+        VertexShader = compile VS_PROFILE VS_ReflectionSpecular20();
+        PixelShader  = compile PS_PROFILE PS_ReflectionSpecular20();
     }
 }

@@ -1,3 +1,5 @@
+#include "Macros.fxh"
+
 string description = "Normal mapping shaders for RacingGame";
 
 // Shader techniques in this file, all shaders work with vs/ps 1.1, shaders not
@@ -241,16 +243,6 @@ float4 PS_Diffuse(VertexOutput In) : COLOR
     return diffuseTexture * ambDiffColor;
 }
 
-// Same for ps20 to show up in 3DS Max.
-technique Diffuse20
-{
-    pass P0
-    {
-        VertexShader = compile vs_1_1 VS_Diffuse();
-        PixelShader  = compile ps_2_0 PS_Diffuse();
-    }
-}
-
 // Pixel shader function, only used to ps2.0 because of .agb
 float4 PS_Diffuse_Transparent(VertexOutput In) : COLOR
 {
@@ -272,21 +264,6 @@ float4 PS_Diffuse_Transparent(VertexOutput In) : COLOR
     float4 ambDiffColor = ambientColor + bump * diffuseColor;
     ambDiffColor.a = 0.33f;
     return diffuseTexture * ambDiffColor;
-}
-
-// Helper technique to display stuff with transparency in max.
-technique Diffuse20Transparent
-{
-    pass P0
-    {
-        // Enable alpha for max
-        AlphaBlendEnable = true;
-        SrcBlend = SrcAlpha;
-        DestBlend = InvSrcAlpha;
-        
-        VertexShader = compile vs_1_1 VS_Diffuse();
-        PixelShader  = compile ps_2_0 PS_Diffuse_Transparent();
-    }
 }
 
 //------------------------------------------------
@@ -397,16 +374,6 @@ float4 PS_Specular20(VertexOutput_Specular20 In) : COLOR
     }
 }
 
-// Techniques
-technique Specular20
-{
-    pass P0
-    {
-        VertexShader = compile vs_1_1 VS_Specular20();
-        PixelShader  = compile ps_2_0 PS_Specular20();
-    }
-}
-
 //----------------------------------------
 
 // Pixel shader function
@@ -431,16 +398,6 @@ float4 PS_DiffuseSpecular20(VertexOutput_Specular20 In) : COLOR
 
     return diffuseTexture * (ambientColor +
         bump * (diffuseColor + spec * specularColor));
-}
-
-// Techniques
-technique DiffuseSpecular20
-{
-    pass P0
-    {
-        VertexShader = compile vs_1_1 VS_Specular20();
-        PixelShader  = compile ps_2_0 PS_DiffuseSpecular20();
-    }
 }
 
 // ------------------------------
@@ -567,15 +524,6 @@ float4 PS_SpecularWithReflection20(VertexOutput_SpecularWithReflection20 In) : C
     return ret;
 }
 
-technique SpecularWithReflection20
-{
-    pass P0
-    {
-        VertexShader = compile vs_1_1 VS_SpecularWithReflection20();
-        PixelShader  = compile ps_2_0 PS_SpecularWithReflection20();
-    }
-}
-
 //----------------------------------------------------
 
 // For ps1.1 we can't do this advanced stuff,
@@ -644,18 +592,6 @@ float4 PS_ReflectionSpecular(VertexOutput_Texture In) : COLOR
         spec * specularColor;
 }
 
-technique ReflectionSpecular
-{
-    pass P0
-    {
-        AlphaBlendEnable = true;
-        SrcBlend = SrcAlpha;
-        DestBlend = InvSrcAlpha;    
-        VertexShader = compile vs_1_1 VS_ReflectionSpecular();
-        PixelShader  = compile ps_2_0 PS_ReflectionSpecular();
-    }
-}
-
 //----------------------------------------------------
 
 struct VertexOutput20
@@ -707,15 +643,6 @@ float4 PS_ReflectionSpecular20(VertexOutput20 In) : COLOR
     ret.a = alphaFactor;
     ret += spec * specularColor;
     return ret;
-}
-
-technique ReflectionSpecular20
-{
-    pass P0
-    {
-        VertexShader = compile vs_1_1 VS_ReflectionSpecular20();
-        PixelShader  = compile ps_2_0 PS_ReflectionSpecular20();
-    }
 }
 
 //---------------------------------------------------
@@ -799,15 +726,6 @@ float4 PS_SpecularWithReflectionForCar20(
     return ret;
 }
 
-technique SpecularWithReflectionForCar20
-{
-    pass P0
-    {
-        VertexShader = compile vs_1_1 VS_SpecularWithReflectionForCar20();
-        PixelShader  = compile ps_2_0 PS_SpecularWithReflectionForCar20();
-    }
-}
-
 //----------------------------------------------
 
 sampler diffuseTextureRoadSampler = sampler_state
@@ -858,11 +776,39 @@ float4 PS_SpecularRoad20(VertexOutput_Specular20 In) : COLOR
 }
 
 // Techniques
-technique SpecularRoad20
+TECHNIQUE(SpecularRoad20, VS_Specular20, PS_SpecularRoad20);
+TECHNIQUE(Diffuse20, VS_Diffuse, PS_Diffuse);
+
+// Helper TECHNIQUE(to display stuff with transparency in max.
+technique Diffuse20Transparent
 {
     pass P0
     {
-        VertexShader = compile vs_1_1 VS_Specular20();
-        PixelShader  = compile ps_2_0 PS_SpecularRoad20();
+        // Enable alpha for max
+        AlphaBlendEnable = true;
+        SrcBlend = SrcAlpha;
+        DestBlend = InvSrcAlpha;
+        
+        VertexShader = compile VS_PROFILE VS_Diffuse();
+        PixelShader  = compile PS_PROFILE PS_Diffuse_Transparent();
     }
 }
+
+TECHNIQUE(Specular20, VS_Specular20, PS_Specular20);
+TECHNIQUE(DiffuseSpecular20, VS_Specular20, PS_DiffuseSpecular20);
+TECHNIQUE(SpecularWithReflection20, VS_SpecularWithReflection20, PS_SpecularWithReflection20);
+
+technique ReflectionSpecular
+{
+    pass P0
+    {
+        AlphaBlendEnable = true;
+        SrcBlend = SrcAlpha;
+        DestBlend = InvSrcAlpha;    
+        VertexShader = compile VS_PROFILE VS_ReflectionSpecular();
+        PixelShader  = compile PS_PROFILE PS_ReflectionSpecular();
+    }
+}
+
+TECHNIQUE(ReflectionSpecular20, VS_ReflectionSpecular20, PS_ReflectionSpecular20);
+TECHNIQUE(SpecularWithReflectionForCar20, VS_SpecularWithReflectionForCar20, PS_SpecularWithReflectionForCar20);

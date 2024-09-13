@@ -1,3 +1,5 @@
+#include "Macros.fxh"
+
 string description = "Generate and use a shadow map with a directional light";
 
 float4x4 worldViewProj         : WorldViewProjection;
@@ -16,7 +18,7 @@ float nearPlane = 2.0f;
 float farPlane = 8.0f;
 // Depth bias, controls how much we remove from the depth
 // to fix depth checking artifacts. For ps_1_1 this should
-// be a very high value (0.01f), for ps_2_0 it can be very low.
+// be a very high value (0.01f), for PS_PROFILE it can be very low.
 float depthBias = 0.0025f;
 // Substract a very low value from shadow map depth to
 // move everything a little closer to the camera.
@@ -28,18 +30,9 @@ float shadowMapDepthBias = -0.0005f;
 // some alpha value (e.g. 0.5) for blending the color to black.
 float4 ShadowColor = {0.25f, 0.26f, 0.27f, 1.0f};
 
-float3 lightDir : Direction
-<
-    string UIName = "Light Direction";
-    string Object = "DirectionalLight";
-    string Space = "World";
-> = {1.0f, -1.0f, 1.0f};
+float3 lightDir = {1.0f, -1.0f, 1.0f};
 
-texture shadowDistanceFadeoutTexture : Diffuse
-<
-    string UIName = "Shadow distance fadeout texture";
-    string ResourceName = "ShadowDistanceFadeoutMap.dds";
->;
+texture shadowDistanceFadeoutTexture;
 sampler shadowDistanceFadeoutTextureSampler = sampler_state
 {
     Texture = <shadowDistanceFadeoutTexture>;
@@ -88,47 +81,6 @@ float3 CalcNormalVector(float3 nor)
     return normalize(mul(nor, (float3x3)world));
 }
 
-// Vertex shader function
-VB_GenerateShadowMap VS_GenerateShadowMap(VertexInput In)
-{
-    VB_GenerateShadowMap Out = (VB_GenerateShadowMap) 0;
-    Out.pos = TransformPosition(In.pos);
-
-    // Use farPlane/10 for the internal near plane, we don't have any
-    // objects near the light, use this to get much better percision!
-    float internalNearPlane = farPlane / 10;
-    
-    // Linear depth calculation instead of normal depth calculation.
-    float depthValue =
-        (Out.pos.z - internalNearPlane)/
-        (farPlane - internalNearPlane);
-    // Set depth value to all 4 rgba components (only first is used anyway).
-    Out.depth = depthValue + shadowMapDepthBias;
-
-    return Out;
-}
-
-// Pixel shader function
-float4 PS_GenerateShadowMap(VB_GenerateShadowMap In) : COLOR
-{
-    // Just set the interpolated depth value.
-    // Format should be R32F or R16F, if that is not possible
-    // A8R8G8B8 is used, which is obviously not that precise.
-    return In.depth;
-}
-
-technique GenerateShadowMap
-{
-    pass P0
-    {
-        // Disable culling to throw shadow even if virtual
-        // shadow light is inside big buildings!
-        CullMode = None;
-        VertexShader = compile vs_1_1 VS_GenerateShadowMap();
-        PixelShader  = compile ps_2_0 PS_GenerateShadowMap();
-    }
-}
-
 //-------------------------------------------------------------------
 
 // Struct used for passing data from VS_GenerateShadowMap to ps
@@ -161,18 +113,6 @@ float4 PS_GenerateShadowMap20(VB_GenerateShadowMap20 In) : COLOR
 {
     // Just set the interpolated depth value.
     return (In.depth.x/In.depth.y) + shadowMapDepthBias;
-}
-
-technique GenerateShadowMap20
-{
-    pass P0
-    {
-        // Disable culling to throw shadow even if virtual
-        // shadow light is inside big buildings!
-        CullMode = None;
-        VertexShader = compile vs_2_0 VS_GenerateShadowMap20();
-        PixelShader  = compile ps_2_0 PS_GenerateShadowMap20();
-    }
 }
 
 //-------------------------------------------------------------------
@@ -243,7 +183,7 @@ VB_UseShadowMap VS_UseShadowMap(VertexInput In)
 
 //-------------------------------------------------------------------
 
-// Sampler for ps_2_0, use point filtering to do bilinear filtering ourself!
+// Sampler for PS_PROFILE, use point filtering to do bilinear filtering ourself!
 sampler ShadowMapSampler20 = sampler_state
 {
     Texture = <shadowMap>;
@@ -359,11 +299,23 @@ float4 PS_UseShadowMap20(VB_UseShadowMap20 In) : COLOR
         return lerp(1, ShadowColor, resultDepth);
 }
 
+technique GenerateShadowMap20
+{
+    pass P0
+    {
+        // Disable culling to throw shadow even if virtual
+        // shadow light is inside big buildings!
+        CullMode = None;
+        VertexShader = compile VS_PROFILE VS_GenerateShadowMap20();
+        PixelShader  = compile PS_PROFILE PS_GenerateShadowMap20();
+    }
+}
+
 technique UseShadowMap20
 {  
     pass P0
     {
-        VertexShader = compile vs_2_0 VS_UseShadowMap20();
-        PixelShader  = compile ps_2_0 PS_UseShadowMap20();
+        VertexShader = compile VS_PROFILE VS_UseShadowMap20();
+        PixelShader  = compile PS_PROFILE PS_UseShadowMap20();
     }
 }

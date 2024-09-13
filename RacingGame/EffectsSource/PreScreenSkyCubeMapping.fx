@@ -1,3 +1,5 @@
+#include "Macros.fxh"
+
 // Shows the sky bg with help of a cube map texture,
 // should be called before anything else is rendered.";
 
@@ -65,11 +67,4 @@ float4 PS_SkyCubeMap(VB_OutputPos3DTexCoord In) : COLOR
     return texCol;
 }
 
-technique SkyCubeMap
-{
-    pass P0
-    {
-        VertexShader = compile vs_1_1 VS_SkyCubeMap();
-        PixelShader  = compile ps_2_0 PS_SkyCubeMap();
-    }
-}
+TECHNIQUE(SkyCubeMap, VS_SkyCubeMap, PS_SkyCubeMap);
