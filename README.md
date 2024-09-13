@@ -1,7 +1,12 @@
 ## XNA-4-Racing-Game-Kit
 =====================
 
-The XNA-4-Racing-Game-Kit project aims to bring the original RacingGame (http://exdream.com/XnaRacingGame/) up to date, from it's design on an older XNA Framework to the most recent MonoGame and FNA frameworks. Once that is complete, bugs will be fixed and minor additions will be made.
+Port of [XNA-4-Racing-Game-Kit](https://www.moddb.com/downloads/xna-40-racing-game-starter-kit) to MonoGame/FNA.
+![image](https://github.com/user-attachments/assets/1c3a4808-4ea3-4ce5-8f28-cf771a38a18a)
+
+The port doesn't use Content Pipeline, but loads all assets in raw form using [XNAssets](https://github.com/rds1983/XNAssets).
+All game 3d models are loaded from glb.
+
 
 ## Building From Source Code for FNA
 
