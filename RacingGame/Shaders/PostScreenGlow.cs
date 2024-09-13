@@ -164,7 +164,7 @@ namespace RacingGame.Shaders
 
             if (windowSize != null)
                 windowSize.SetValue(
-                    new float[] { sceneMapTexture.Width, sceneMapTexture.Height });
+                    new Vector2(sceneMapTexture.Width, sceneMapTexture.Height ));
             if (sceneMap != null)
                 sceneMap.SetValue(sceneMapTexture.XnaTexture);
 
@@ -178,7 +178,7 @@ namespace RacingGame.Shaders
 
             // We must have exactly 5 passes!
             if (effect.CurrentTechnique.Passes.Count != 5)
-                throw new InvalidOperationException(
+                throw new InvalidOperationException(    
                     "This shader should have exactly 5 passes!");
 
             try

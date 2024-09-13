@@ -12,7 +12,13 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+
+#if FNA
+
 using Microsoft.Xna.Framework.Storage;
+
+#endif
+
 #endregion
 
 namespace RacingGame.Helpers

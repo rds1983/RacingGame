@@ -1009,6 +1009,8 @@ namespace RacingGame.Graphics
             // Set graphics
             graphicsManager = new GraphicsDeviceManager(this);
 
+            graphicsManager.GraphicsProfile = GraphicsProfile.HiDef;
+
             graphicsManager.PreparingDeviceSettings +=
                 new EventHandler<PreparingDeviceSettingsEventArgs>(
                     graphics_PrepareDevice);
@@ -1071,7 +1073,7 @@ namespace RacingGame.Graphics
         /// </summary>
         protected override void Initialize()
         {
-#if !XBOX360
+#if FNA
             // Add screenshot capturer. Note: Don't do this in constructor,
             // we need the correct window name for screenshots!
             this.Components.Add(new ScreenshotCapturer(this));

@@ -11,13 +11,19 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Storage;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
 using RacingGame.Helpers;
 using System.Threading;
+
+#if FNA
+
+using Microsoft.Xna.Framework.Storage;
+
+#endif
+
 #endregion
 
 namespace RacingGame.Properties
@@ -79,9 +85,13 @@ namespace RacingGame.Properties
         /// <param name="loadSettings">Load settings</param>
         public static void Initialize()
         {
+#if FNA
             Load();
+#endif
         }
         #endregion
+
+#if FNA
 
         #region Load
         /// <summary>
@@ -153,12 +163,16 @@ namespace RacingGame.Properties
         }
         #endregion
 
+#endif
+
         #region Save
+
         /// <summary>
         /// Save
         /// </summary>
         public static void Save()
         {
+#if FNA
             // No need to save if everything is up to date.
             if (needSave == false)
                 return;
@@ -196,22 +210,27 @@ namespace RacingGame.Properties
             }
 
             FileHelper.StorageContainerMRE.Set();
-        }
+#endif
+		}
 
-        /// <summary>
-        /// Sets all of the graphical settings to their minimum possible
-        /// values and saves the changes.
-        /// </summary>
-        public static void SetMinimumGraphics()
+
+		/// <summary>
+		/// Sets all of the graphical settings to their minimum possible
+		/// values and saves the changes.
+		/// </summary>
+		public static void SetMinimumGraphics()
         {
             GameSettings.Default.ResolutionWidth = GameSettings.MinimumResolutionWidth;
             GameSettings.Default.ResolutionHeight = GameSettings.MinimumResolutionHeight;
             GameSettings.Default.ShadowMapping = false;
             GameSettings.Default.HighDetail = false;
             GameSettings.Default.PostScreenEffects = false;
+
+#if FNA
             GameSettings.Save();
+#endif
         }
-        #endregion
+#endregion
 
         #region Setting variables with properties
         /// <summary>
@@ -309,7 +328,7 @@ namespace RacingGame.Properties
         /// <summary>
         /// Fullscreen
         /// </summary>
-        bool fullscreen = true;
+        bool fullscreen = false;
         /// <summary>
         /// Fullscreen
         /// </summary>

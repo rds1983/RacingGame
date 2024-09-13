@@ -659,7 +659,9 @@ namespace RacingGame.Landscapes
         /// <param name="replay">Replay to be saved</param>
         private void SaveReplay(object replay)
         {
+#if FNA
             ((Replay)replay).Save();
+#endif
         }
 
         /// <summary>
@@ -682,7 +684,7 @@ namespace RacingGame.Landscapes
         /// Little helper to avoid creating a new array each frame for rendering
         /// </summary>
         TangentVertex[] brakeTracksVerticesArray = null;
-        #endregion
+#endregion
 
         #region Properties
         /// <summary>

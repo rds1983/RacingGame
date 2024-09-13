@@ -16,8 +16,13 @@ using RacingGame.Helpers;
 using System.IO;
 using RacingGame.GameScreens;
 using RacingGame.Tracks;
-using Microsoft.Xna.Framework.Storage;
 #endregion
+
+#if FNA
+
+using Microsoft.Xna.Framework.Storage;
+
+#endif
 
 namespace RacingGame.GameLogic
 {
@@ -174,6 +179,7 @@ namespace RacingGame.GameLogic
 
             bool replayFileFound = false;
 
+#if FNA
             FileHelper.StorageContainerMRE.WaitOne();
             FileHelper.StorageContainerMRE.Reset();
 
@@ -222,6 +228,7 @@ namespace RacingGame.GameLogic
             }
 
             FileHelper.StorageContainerMRE.Set();
+#endif
 
             // Load if possible
             if (!replayFileFound && File.Exists(Path.Combine(
@@ -315,9 +322,11 @@ namespace RacingGame.GameLogic
                 checkpointTimes.Add(lapTime);
             }
         }
-        #endregion
+#endregion
 
-        #region Save
+#region Save
+
+#if FNA
         /// <summary>
         /// Save this replay, will be saved to
         /// TrackBeginner.replay, TrackAdvanced.replay or TrackExpert.replay.
@@ -369,6 +378,8 @@ namespace RacingGame.GameLogic
             FileHelper.StorageContainerMRE.Set();
         }
 
+#endif
+
         /// <summary>
         /// Creates a deep copy of a replay object
         /// </summary>
@@ -381,7 +392,7 @@ namespace RacingGame.GameLogic
 
             return clone;
         }
-        #endregion
+#endregion
 
         #region Add car matrix
         /// <summary>

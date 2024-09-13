@@ -45,7 +45,7 @@ namespace RacingGame
 
 				// Load effect
 				var effectPath = Path.ChangeExtension(md.Effect, "efb");
-				var effect = manager.LoadEffect(BaseGame.Device, effectPath).Clone();
+				var effect = manager.LoadEffect2(effectPath).Clone();
 				effect.Name = pair.Key;
 
 				// Set parameters

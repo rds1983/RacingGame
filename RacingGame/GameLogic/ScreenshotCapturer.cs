@@ -7,8 +7,7 @@
 //-----------------------------------------------------------------------------
 #endregion
 
-// Does not work on the Xbox360, no Save method in the Texture class!
-#if !XBOX360
+#if FNA
 
 #region Using Statements
 using System;
@@ -198,4 +197,5 @@ namespace RacingGame.GameLogic
         #endregion
     }
 }
+
 #endif

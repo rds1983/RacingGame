@@ -15,7 +15,12 @@ using System.ComponentModel;
 using System.IO.IsolatedStorage;
 using System.Threading;
 using System.Diagnostics;
+
+#if FNA
+
 using Microsoft.Xna.Framework.Storage;
+
+#endif
 #endregion
 
 namespace RacingGame.Helpers

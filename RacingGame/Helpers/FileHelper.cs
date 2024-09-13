@@ -9,11 +9,17 @@
 
 #region Using directives
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Storage;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
+
+#if FNA
+
+using Microsoft.Xna.Framework.Storage;
+
+#endif
+
 #endregion
 
 namespace RacingGame.Helpers
@@ -34,12 +40,12 @@ namespace RacingGame.Helpers
         {
             return TitleContainer.OpenStream(relativeFilename);
         }
-        #endregion
+		#endregion
 
-        #region StorageDevice
+		#region StorageDevice
 
+#if FNA
         public static ManualResetEvent StorageContainerMRE = new ManualResetEvent(true);
-
 
         /// <summary>
         /// XNA user device, asks for the saving location on the Xbox360,
@@ -67,31 +73,19 @@ namespace RacingGame.Helpers
                     async.AsyncWaitHandle.WaitOne();
 
                     xnaUserDevice = StorageDevice.EndShowSelector(async);
-#if XBOX360
-                    if (!Guide.IsVisible)
-                    {
-                        BaseGame.GamerServicesComponent.Update(new GameTime());
-                    }
-                    if (Guide.IsVisible)
-                    {
-                        Thread.Sleep(10);
-                        BaseGame.GamerServicesComponent.Update(new GameTime());
-                        BaseGame.graphicsManager.GraphicsDevice.Clear(Color.Black);
-                        BaseGame.graphicsManager.GraphicsDevice.Present();
-                    }
-#endif
                 }
                 return xnaUserDevice;
             }
         }
+#endif
 
-        #endregion
+		#endregion
 
-        #region Get text lines
-        /// <summary>
-        /// Returns the number of text lines we got in a file.
-        /// </summary>
-        static public string[] GetLines(string filename)
+		#region Get text lines
+		/// <summary>
+		/// Returns the number of text lines we got in a file.
+		/// </summary>
+		static public string[] GetLines(string filename)
         {
             try
             {
