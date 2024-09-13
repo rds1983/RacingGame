@@ -13,7 +13,6 @@ All game 3d models are loaded from glb.
 Clone following repos in one folder:
 * [FNA](https://github.com/FNA-XNA/FNA)
 * [DdsKtxXna](https://github.com/rds1983/DdsKtxXna)
-* [FontStashSharp](https://github.com/FontStashSharp/FontStashSharp)
 * [XNAssets](https://github.com/rds1983/XNAssets)
 * This repo
 
