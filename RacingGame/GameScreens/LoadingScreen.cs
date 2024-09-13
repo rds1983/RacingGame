@@ -45,7 +45,10 @@ namespace RacingGame.GameScreens
 		/// </summary>
 		public void Update(GameTime gameTime)
 		{
+			if (RacingGameManager.LoadingThread.ThreadState == ThreadState.Unstarted)
+				RacingGameManager.LoadingThread.Start();
 		}
+
 
 		public void LoadEvent(object sender, EventArgs e)
 		{
@@ -72,8 +75,8 @@ namespace RacingGame.GameScreens
 			}
 
 			TextureFont.WriteTextCentered(BaseGame.Width / 2, (int)position.Y + 40, loadingStatus);
-			return true;
-        }
-        #endregion
+			return RacingGameManager.ContentLoaded;
+		}
+		#endregion
 	}
 }

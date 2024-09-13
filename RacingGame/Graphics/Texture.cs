@@ -171,7 +171,7 @@ namespace RacingGame.Graphics
         /// </summary>
         /// <param name="setFilename">Set filename, must be relative and be a
         /// valid file in the textures directory.</param>
-        public Texture(string setFilename)
+        public Texture(string setFilename, bool premultiplyAlpha = true)
         {
             if (alphaSprite == null)
                 alphaSprite = new SpriteBatch(BaseGame.Device);
@@ -187,7 +187,7 @@ namespace RacingGame.Graphics
             string fullFilename = $"textures/{setFilename}";
 
             // Try loading as 2d texture
-            internalXnaTexture = BaseGame.Content.LoadTexture2D(BaseGame.Device, fullFilename);
+            internalXnaTexture = BaseGame.Content.LoadTexture2D(BaseGame.Device, fullFilename, premultiplyAlpha);
 
             // Get info from the texture directly.
             texWidth = internalXnaTexture.Width;

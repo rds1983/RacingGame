@@ -75,7 +75,7 @@
     },
     "Material__298": {
       "Effect": "../shaders/NormalMapping.fx",
-      "Technique": "Diffuse",
+      "Technique": "Diffuse20",
       "Parameters": {
         "lightDir": 0,
         "ambientColor": [
