@@ -645,7 +645,7 @@ namespace RacingGame.Graphics
 					// Render
 					if (dontRender == false)
 					{
-						model.Draw(mesh);
+						mesh.Draw();
 					}
 
 					// Change shader back to default render technique.

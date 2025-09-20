@@ -1,6 +1,7 @@
 ﻿using DigitalRiseModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using RacingGame.Graphics;
 using System;
 using System.Collections.Generic;
 
@@ -59,6 +60,26 @@ namespace RacingGame.Utilities
 			}
 
 			return bone.Name;
+		}
+
+		public static void Draw(this DrMesh mesh)
+		{
+			var graphicsDevice = BaseGame.Device;
+
+			for (int i = 0; i < mesh.Submeshes.Count; i++)
+			{
+				var submesh = mesh.Submeshes[i];
+				if (submesh.PrimitiveCount > 0)
+				{
+					var effect = submesh.GetEffect();
+					for (int j = 0; j < effect.CurrentTechnique.Passes.Count; j++)
+					{
+						effect.CurrentTechnique.Passes[j].Apply();
+
+						submesh.Draw(graphicsDevice);
+					}
+				}
+			}
 		}
 	}
 }

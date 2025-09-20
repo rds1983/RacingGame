@@ -33,13 +33,7 @@ namespace RacingGame
 
 			// Load model
 			var model = manager.LoadGltf(BaseGame.Device, assetName);
-
-			var modelInstance = new DrModelInstance
-			{
-				Model = model
-			};
-
-			var result = new ModelInfo(modelInstance, materialInfo);
+			var result = new ModelInfo(model, materialInfo);
 			foreach (var meshBone in model.MeshBones)
 			{
 				var mesh = meshBone.Mesh;
