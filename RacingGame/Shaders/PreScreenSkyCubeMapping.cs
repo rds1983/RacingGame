@@ -21,6 +21,7 @@ using RacingGame.GameScreens;
 using XnaModel = Microsoft.Xna.Framework.Graphics.Model;
 using RacingGame;
 using AssetManagementBase;
+using DigitalRiseModel;
 #endregion
 
 namespace RacingGame.Shaders
@@ -63,7 +64,7 @@ namespace RacingGame.Shaders
             }
         }
 
-        private XnaModel cube;
+        private DrModel cube;
         #endregion
 
         #region Constructor
@@ -73,7 +74,7 @@ namespace RacingGame.Shaders
         public PreScreenSkyCubeMapping()
             : base(Filename)
         {
-            cube = BaseGame.Content.LoadModel(@"Models\Cube.glb");
+            cube = BaseGame.Content.LoadGltf(BaseGame.Device, @"Models\Cube.glb");
         }
         #endregion
 
@@ -119,8 +120,11 @@ namespace RacingGame.Shaders
             ProjectionMatrix = BaseGame.ProjectionMatrix;
 
             // Override model's effect and render
-            cube.Meshes[0].MeshParts[0].Effect = effect;
-            cube.Meshes[0].Draw();
+            foreach (var pass in effect.CurrentTechnique.Passes)
+            {
+                pass.Apply();
+                cube.MeshBones[0].Mesh.Submeshes[0].Draw(BaseGame.Device);
+            }
 
             // Reset previous render states
             BaseGame.Device.DepthStencilState = DepthStencilState.Default;

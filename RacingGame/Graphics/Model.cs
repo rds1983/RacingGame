@@ -18,6 +18,8 @@ using RacingGame.Shaders;
 using RacingGame.Tracks;
 using XnaModel = Microsoft.Xna.Framework.Graphics.Model;
 using RacingGame;
+using DigitalRiseModel;
+using RacingGame.Utilities;
 #endregion
 
 namespace RacingGame.Graphics
@@ -37,9 +39,9 @@ namespace RacingGame.Graphics
 		string name = "";
 
 		/// <summary>
-		/// Underlying xna model object. Loaded with the content system.
+		/// Underlying model object.
 		/// </summary>
-		XnaModel xnaModel = null;
+		ModelInfo model = null;
 
 		/*not longer required
         /// <summary>
@@ -87,7 +89,7 @@ namespace RacingGame.Graphics
 		/// modelmesh here. Used for the windmill, which is rotated in
 		/// Render!
 		/// </summary>
-		ModelMesh animatedMesh = null;
+		DrMesh animatedMesh = null;
 
 		/// <summary>
 		/// Cached effect parameters to improve performance.
@@ -112,9 +114,7 @@ namespace RacingGame.Graphics
 		/// Renderable meshes dictionary. Used to render every RenderableMesh
 		/// in our render method.
 		/// </summary>
-		Dictionary<ModelMeshPart, MeshRenderManager.RenderableMesh>
-			renderableMeshes =
-			new Dictionary<ModelMeshPart, MeshRenderManager.RenderableMesh>();
+		Dictionary<DrSubmesh, MeshRenderManager.RenderableMesh> renderableMeshes = new Dictionary<DrSubmesh, MeshRenderManager.RenderableMesh>();
 		#endregion
 
 		#region Properties
@@ -142,20 +142,6 @@ namespace RacingGame.Graphics
 			}
 		}
 
-		/// <summary>
-		/// Number of mesh parts
-		/// </summary>
-		/// <returns>Int</returns>
-		public int NumOfMeshParts
-		{
-			get
-			{
-				int ret = 0;
-				for (int meshNum = 0; meshNum < xnaModel.Meshes.Count; meshNum++)
-					ret += xnaModel.Meshes[meshNum].MeshParts.Count;
-				return ret;
-			}
-		}
 		#endregion
 
 		#region Constructor
@@ -167,21 +153,19 @@ namespace RacingGame.Graphics
 		{
 			name = setModelName;
 
-			xnaModel = BaseGame.Content.LoadModel(
-				$"models/{name}.glb");
+			model = BaseGame.Content.LoadModelInfo($"models/{name}.glb");
 
 			// Get matrix transformations of the model
 			// Has to be done only once because we don't use animations in our game.
-			if (xnaModel != null)
+			if (model != null)
 			{
-				transforms = new Matrix[xnaModel.Bones.Count];
-				xnaModel.CopyAbsoluteBoneTransformsTo(transforms);
+				transforms = new Matrix[model.Bones.Length];
+				model.CopyAbsoluteBoneTransformsTo(transforms);
 
 				// Calculate scaling for this object, used for distance comparisons.
-				if (xnaModel.Meshes.Count > 0)
+				if (model.MeshBones.Length > 0)
 					realScaling = scaling =
-						xnaModel.Meshes[0].BoundingSphere.Radius *
-						transforms[0].Right.Length();
+						model.MeshBones[0].Mesh.BoundingBox.Radius() * transforms[0].Right.Length();
 
 				// For palms, laterns, holders and column holders reduce scaling
 				// to reduce the number of objects we have to render.
@@ -214,9 +198,10 @@ namespace RacingGame.Graphics
 			isCar = (name.ToLower() == "car");
 
 			// Go through all meshes in the model
-			for (int meshNum = 0; meshNum < xnaModel.Meshes.Count; meshNum++)
+			for (int meshNum = 0; meshNum < model.MeshBones.Length; meshNum++)
 			{
-				ModelMesh mesh = xnaModel.Meshes[meshNum];
+				var bone = model.MeshBones[meshNum];
+				DrMesh mesh = model.MeshBones[meshNum].Mesh;
 				int meshPartNum = 0;
 				string meshName = mesh.Name;
 
@@ -227,9 +212,10 @@ namespace RacingGame.Graphics
 
 				// And for each effect this mesh uses (usually just 1, multimaterials
 				// are nice in 3ds max, but not efficiently for rendering stuff).
-				for (int effectNum = 0; effectNum < mesh.Effects.Count; effectNum++)
+				for (int effectNum = 0; effectNum < mesh.GetEffects().Length; effectNum++)
 				{
-					Effect effect = mesh.Effects[effectNum];
+					var effect = mesh.GetEffects()[effectNum];
+
 					// Store our 4 effect parameters
 					cachedEffectParameters.Add(effect.Parameters["diffuseTexture"]);
 					cachedEffectParameters.Add(effect.Parameters["ambientColor"]);
@@ -295,21 +281,22 @@ namespace RacingGame.Graphics
 				}
 
 				// Add all mesh parts!
-				for (int partNum = 0; partNum < mesh.MeshParts.Count; partNum++)
+				for (int partNum = 0; partNum < mesh.Submeshes.Count; partNum++)
 				{
-					ModelMeshPart part = mesh.MeshParts[partNum];
+					var part = mesh.Submeshes[partNum];
+
 					// The model mesh part is not really used, we just extract the
 					// index and vertex buffers and all the render data.
 					// Material settings are build from the effect settings.
 					// Also add this to our own dictionary for rendering.
-					renderableMeshes.Add(part, BaseGame.MeshRenderManager.Add(
-						part.VertexBuffer, part.IndexBuffer, part, part.Effect));
+
+					renderableMeshes.Add(part, BaseGame.MeshRenderManager.Add(part.VertexBuffer, part.IndexBuffer, part, part.GetEffect()));
 				}
 			}
 
 #if DEBUG
 			// Check if there are no meshes to render
-			if (xnaModel.Meshes.Count == 0)
+			if (model.MeshBones.Length == 0)
 				throw new ArgumentException("Invalid model " + name +
 					". It does not contain any meshes");
 #endif
@@ -336,7 +323,7 @@ namespace RacingGame.Graphics
 			{
 				// Just set everything to null so we stop using this!
 				name = "";
-				xnaModel = null;
+				model = null;
 				transforms = null;
 				animatedMesh = null;
 			}
@@ -413,14 +400,13 @@ namespace RacingGame.Graphics
 			renderMatrix = objectMatrix * renderMatrix;
 
 			// Go through all meshes in the model
-			for (int meshNum = 0; meshNum < xnaModel.Meshes.Count; meshNum++)
+			for (int meshNum = 0; meshNum < model.MeshBones.Length; meshNum++)
 			{
-				ModelMesh mesh = xnaModel.Meshes[meshNum];
+				var bone = model.MeshBones[meshNum];
+				var mesh = bone.Mesh;
 
 				// Assign world matrix
-				Matrix worldMatrix =
-					transforms[mesh.ParentBone.Index] *
-					renderMatrix;
+				Matrix worldMatrix = transforms[bone.Index] * renderMatrix;
 
 				// Got animation?
 				if (animatedMesh == mesh)
@@ -432,17 +418,16 @@ namespace RacingGame.Graphics
 						renderMatrix.Determinant() * 5 +
 						(1.0f + ((int)(renderMatrix.M42 * 33.3f) % 100) * 0.00123f) *
 						BaseGame.TotalTime / 0.654f) *
-						transforms[mesh.ParentBone.Index] *
+						transforms[bone.Index] *
 						renderMatrix;
 				}
 
 				// Just add this world matrix to our render matrices for each part.
-				for (int partNum = 0; partNum < mesh.MeshParts.Count; partNum++)
+				for (int partNum = 0; partNum < mesh.Submeshes.Count; partNum++)
 				{
 					// Find mesh part in the renderableMeshes dictionary and add the
 					// new render matrix to be picked up in the mesh rendering later.
-					renderableMeshes[mesh.MeshParts[partNum]].renderMatrices.Add(
-						worldMatrix);
+					renderableMeshes[mesh.Submeshes[partNum]].renderMatrices.Add(worldMatrix);
 				}
 			}
 		}
@@ -491,14 +476,15 @@ namespace RacingGame.Graphics
 					{
 						int wheelNumber = 0;
 						// And just render all meshes with it!
-						for (int meshNum = 0; meshNum < xnaModel.Meshes.Count; meshNum++)
+						for (int meshNum = 0; meshNum < model.MeshBones.Length; meshNum++)
 						{
-							ModelMesh mesh = xnaModel.Meshes[meshNum];
+							var bone = model.MeshBones[meshNum];
+							var mesh = bone.Mesh;
 
-							Matrix meshMatrix = transforms[mesh.ParentBone.Index];
+							Matrix meshMatrix = transforms[bone.Index];
 
 							// Only the wheels have 2 mesh parts (gummi and chrome)
-							if (mesh.MeshParts.Count == 2)
+							if (mesh.Submeshes.Count == 2)
 							{
 								wheelNumber++;
 								meshMatrix =
@@ -520,9 +506,9 @@ namespace RacingGame.Graphics
 
 							// And render (must be done without mesh.Draw, which would
 							// just use the original shaders for the model)
-							for (int partNum = 0; partNum < mesh.MeshParts.Count; partNum++)
+							for (int partNum = 0; partNum < mesh.Submeshes.Count; partNum++)
 							{
-								ModelMeshPart part = mesh.MeshParts[partNum];
+								var part = mesh.Submeshes[partNum];
 								// Make sure vertex declaration is correct
 								// Set vertex buffer and index buffer
 								BaseGame.Device.SetVertexBuffer(part.VertexBuffer);
@@ -531,7 +517,7 @@ namespace RacingGame.Graphics
 								// And render all primitives
 								BaseGame.Device.DrawIndexedPrimitives(
 									PrimitiveType.TriangleList,
-									part.VertexOffset, 0, part.NumVertices,
+									part.StartVertex, 0, part.VertexCount,
 									part.StartIndex, part.PrimitiveCount);
 							}
 						}
@@ -554,14 +540,15 @@ namespace RacingGame.Graphics
 				int effectParameterIndex = 0;
 				int effectTechniqueIndex = 0;
 
-				for (int meshNum = 0; meshNum < xnaModel.Meshes.Count; meshNum++)
+				for (int meshNum = 0; meshNum < model.MeshBones.Length; meshNum++)
 				{
-					ModelMesh mesh = xnaModel.Meshes[meshNum];
+					var bone = model.MeshBones[meshNum];
+					var mesh = bone.Mesh;
 					bool dontRender = false;
 
-					for (int effectNum = 0; effectNum < mesh.Effects.Count; effectNum++)
+					for (int effectNum = 0; effectNum < mesh.GetEffects().Length; effectNum++)
 					{
-						Effect effect = mesh.Effects[effectNum];
+						Effect effect = mesh.GetEffects()[effectNum];
 						if (effectNum == 0)
 							remCurrentTechnique = effect.CurrentTechnique;
 
@@ -619,10 +606,10 @@ namespace RacingGame.Graphics
 							}
 						}
 
-						Matrix meshMatrix = transforms[mesh.ParentBone.Index];
+						Matrix meshMatrix = transforms[bone.Index];
 
 						// Only the wheels have 2 mesh parts (gummi and chrome)
-						if (mesh.MeshParts.Count == 2)
+						if (mesh.Submeshes.Count == 2)
 						{
 							wheelNumber++;
 							meshMatrix =
@@ -657,14 +644,15 @@ namespace RacingGame.Graphics
 
 					// Render
 					if (dontRender == false)
-						mesh.Draw();
+					{
+						model.Draw(mesh);
+					}
 
 					// Change shader back to default render technique.
 					// We only have to do this if the color was changed
-					if (RacingGameManager.currentCarColor != 0 &&
-						remCurrentTechnique != null)
+					if (RacingGameManager.currentCarColor != 0 && remCurrentTechnique != null)
 					{
-						mesh.Effects[0].CurrentTechnique = remCurrentTechnique;
+						mesh.GetEffects()[0].CurrentTechnique = remCurrentTechnique;
 					}
 				}
 			}
@@ -695,12 +683,14 @@ namespace RacingGame.Graphics
 			// Multiply object matrix by render matrix.
 			renderMatrix = objectMatrix * renderMatrix;
 
-			for (int meshNum = 0; meshNum < xnaModel.Meshes.Count; meshNum++)
+			for (int meshNum = 0; meshNum < model.MeshBones.Length; meshNum++)
 			{
-				ModelMesh mesh = xnaModel.Meshes[meshNum];
+				var bone = model.MeshBones[meshNum];
+				var mesh = bone.Mesh;
+
 				// Use the ShadowMapShader helper method to set the world matrices
 				ShaderEffect.shadowMapping.UpdateGenerateShadowWorldMatrix(
-					transforms[mesh.ParentBone.Index] *
+					transforms[bone.Index] *
 					renderMatrix);
 
 				// Got animation?
@@ -713,13 +703,13 @@ namespace RacingGame.Graphics
 						renderMatrix.Determinant() * 5 +
 						(1.0f + ((int)(renderMatrix.M42 * 33.3f) % 100) * 0.00123f) *
 						BaseGame.TotalTime / 0.654f) *
-						transforms[mesh.ParentBone.Index] *
+						transforms[bone.Index] *
 						renderMatrix);
 				}
 
-				for (int partNum = 0; partNum < mesh.MeshParts.Count; partNum++)
+				for (int partNum = 0; partNum < mesh.Submeshes.Count; partNum++)
 				{
-					ModelMeshPart part = mesh.MeshParts[partNum];
+					var part = mesh.Submeshes[partNum];
 					// Render just the vertices, do not use the shaders of our model.
 					// This is the same code as ModelMeshPart.Draw() uses, but
 					// this method is internal and can't be used by us :(
@@ -727,8 +717,8 @@ namespace RacingGame.Graphics
 					BaseGame.Device.Indices = part.IndexBuffer;
 					BaseGame.Device.DrawIndexedPrimitives(
 						PrimitiveType.TriangleList,
-						part.VertexOffset, 0,
-						part.NumVertices, part.StartIndex, part.PrimitiveCount);
+						part.StartVertex, 0,
+						part.VertexCount, part.StartIndex, part.PrimitiveCount);
 				}
 			}
 		}
@@ -766,12 +756,13 @@ namespace RacingGame.Graphics
 			// Multiply object matrix by render matrix.
 			renderMatrix = objectMatrix * renderMatrix;
 
-			for (int meshNum = 0; meshNum < xnaModel.Meshes.Count; meshNum++)
+			for (int meshNum = 0; meshNum < model.MeshBones.Length; meshNum++)
 			{
-				ModelMesh mesh = xnaModel.Meshes[meshNum];
+				var bone = model.MeshBones[meshNum];
+				var mesh = bone.Mesh;
 				// Use the ShadowMapShader helper method to set the world matrices
 				ShaderEffect.shadowMapping.UpdateCalcShadowWorldMatrix(
-					transforms[mesh.ParentBone.Index] *
+					transforms[bone.Index] *
 					renderMatrix);
 
 				// Got animation?
@@ -784,13 +775,13 @@ namespace RacingGame.Graphics
 						renderMatrix.Determinant() * 5 +
 						(1.0f + ((int)(renderMatrix.M42 * 33.3f) % 100) * 0.00123f) *
 						BaseGame.TotalTime / 0.654f) *
-						transforms[mesh.ParentBone.Index] *
+						transforms[bone.Index] *
 						renderMatrix);
 				}
 
-				for (int partNum = 0; partNum < mesh.MeshParts.Count; partNum++)
+				for (int partNum = 0; partNum < mesh.Submeshes.Count; partNum++)
 				{
-					ModelMeshPart part = mesh.MeshParts[partNum];
+					var part = mesh.Submeshes[partNum];
 					// Render just the vertices, do not use the shaders of our model.
 					// This is the same code as ModelMeshPart.Draw() uses, but
 					// this method is internal and can't be used by us :(
@@ -798,8 +789,8 @@ namespace RacingGame.Graphics
 					BaseGame.Device.Indices = part.IndexBuffer;
 					BaseGame.Device.DrawIndexedPrimitives(
 						PrimitiveType.TriangleList,
-						part.VertexOffset, 0,
-						part.NumVertices, part.StartIndex, part.PrimitiveCount);
+						part.StartVertex, 0,
+						part.VertexCount, part.StartIndex, part.PrimitiveCount);
 				}
 			}
 		}

@@ -10,6 +10,9 @@
 #region Using directives
 using System;
 using RacingGame.Properties;
+using AssetManagementBase;
+
+
 #if !XBOX360
 using Microsoft.Xna.Framework.Graphics;
 #endif
@@ -49,6 +52,7 @@ namespace RacingGame
             try
             {
 #endif
+                AMBConfiguration.Logger = s => Console.WriteLine(s);
                 using (RacingGameManager game = new RacingGameManager())
                 {
                     game.Run();
