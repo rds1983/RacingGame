@@ -39,10 +39,10 @@ namespace RacingGame
 				var mesh = meshBone.Mesh;
 
 				// Set effects
-				foreach(var submesh in mesh.Submeshes)
+				foreach(var meshpart in mesh.MeshParts)
 				{
 					var effect = ShaderEffect.normalMapping.Effect;
-					var material = submesh.Material;
+					var material = meshpart.Material;
 
 					EffectInfo info;
 
@@ -51,18 +51,18 @@ namespace RacingGame
 						effect = info.Effect;
 					}
 
-					submesh.SetEffect(effect);
+					meshpart.SetEffect(effect);
 				}
 
 				// Update mesh names
 				var name = meshBone.GetBoneMeshName();
 				var effects = materialInfo.MeshesEffects[name];
-				for (var i = 0; i < Math.Min(mesh.Submeshes.Count, effects.Length); ++i)
+				for (var i = 0; i < Math.Min(mesh.MeshParts.Count, effects.Length); ++i)
 				{
 					var effectInfo = effects[i];
 
 					var effect = effectInfo.Effect;
-					mesh.Submeshes[i].SetEffect(effect);
+					mesh.MeshParts[i].SetEffect(effect);
 					effect.CurrentTechnique = effectInfo.Technique;
 					name += effectInfo.TechniqueIndex;
 

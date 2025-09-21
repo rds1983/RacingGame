@@ -10,8 +10,8 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="DigitalRiseModel.Gltf.MonoGame" Version="0.5.0" />
-    <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.2.1105" />
+    <PackageReference Include="DigitalRiseModel.Gltf.MonoGame" Version="0.5.1" />
+    <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.4" />
   </ItemGroup>
 
   <ItemGroup>

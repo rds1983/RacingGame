@@ -123,7 +123,7 @@ namespace RacingGame.Shaders
             foreach (var pass in effect.CurrentTechnique.Passes)
             {
                 pass.Apply();
-                cube.MeshBones[0].Mesh.Submeshes[0].Draw(BaseGame.Device);
+                cube.MeshBones[0].Mesh.MeshParts[0].Draw(BaseGame.Device);
             }
 
             // Reset previous render states

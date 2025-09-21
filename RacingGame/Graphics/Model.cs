@@ -114,7 +114,7 @@ namespace RacingGame.Graphics
 		/// Renderable meshes dictionary. Used to render every RenderableMesh
 		/// in our render method.
 		/// </summary>
-		Dictionary<DrSubmesh, MeshRenderManager.RenderableMesh> renderableMeshes = new Dictionary<DrSubmesh, MeshRenderManager.RenderableMesh>();
+		Dictionary<DrMeshPart, MeshRenderManager.RenderableMesh> renderableMeshes = new Dictionary<DrMeshPart, MeshRenderManager.RenderableMesh>();
 		#endregion
 
 		#region Properties
@@ -281,9 +281,9 @@ namespace RacingGame.Graphics
 				}
 
 				// Add all mesh parts!
-				for (int partNum = 0; partNum < mesh.Submeshes.Count; partNum++)
+				for (int partNum = 0; partNum < mesh.MeshParts.Count; partNum++)
 				{
-					var part = mesh.Submeshes[partNum];
+					var part = mesh.MeshParts[partNum];
 
 					// The model mesh part is not really used, we just extract the
 					// index and vertex buffers and all the render data.
@@ -423,11 +423,11 @@ namespace RacingGame.Graphics
 				}
 
 				// Just add this world matrix to our render matrices for each part.
-				for (int partNum = 0; partNum < mesh.Submeshes.Count; partNum++)
+				for (int partNum = 0; partNum < mesh.MeshParts.Count; partNum++)
 				{
 					// Find mesh part in the renderableMeshes dictionary and add the
 					// new render matrix to be picked up in the mesh rendering later.
-					renderableMeshes[mesh.Submeshes[partNum]].renderMatrices.Add(worldMatrix);
+					renderableMeshes[mesh.MeshParts[partNum]].renderMatrices.Add(worldMatrix);
 				}
 			}
 		}
@@ -484,7 +484,7 @@ namespace RacingGame.Graphics
 							Matrix meshMatrix = transforms[bone.Index];
 
 							// Only the wheels have 2 mesh parts (gummi and chrome)
-							if (mesh.Submeshes.Count == 2)
+							if (mesh.MeshParts.Count == 2)
 							{
 								wheelNumber++;
 								meshMatrix =
@@ -506,19 +506,10 @@ namespace RacingGame.Graphics
 
 							// And render (must be done without mesh.Draw, which would
 							// just use the original shaders for the model)
-							for (int partNum = 0; partNum < mesh.Submeshes.Count; partNum++)
+							for (int partNum = 0; partNum < mesh.MeshParts.Count; partNum++)
 							{
-								var part = mesh.Submeshes[partNum];
-								// Make sure vertex declaration is correct
-								// Set vertex buffer and index buffer
-								BaseGame.Device.SetVertexBuffer(part.VertexBuffer);
-								BaseGame.Device.Indices = part.IndexBuffer;
-
-								// And render all primitives
-								BaseGame.Device.DrawIndexedPrimitives(
-									PrimitiveType.TriangleList,
-									part.StartVertex, 0, part.VertexCount,
-									part.StartIndex, part.PrimitiveCount);
+								var part = mesh.MeshParts[partNum];
+								part.Draw(BaseGame.Device);
 							}
 						}
 					});
@@ -609,7 +600,7 @@ namespace RacingGame.Graphics
 						Matrix meshMatrix = transforms[bone.Index];
 
 						// Only the wheels have 2 mesh parts (gummi and chrome)
-						if (mesh.Submeshes.Count == 2)
+						if (mesh.MeshParts.Count == 2)
 						{
 							wheelNumber++;
 							meshMatrix =
@@ -707,18 +698,13 @@ namespace RacingGame.Graphics
 						renderMatrix);
 				}
 
-				for (int partNum = 0; partNum < mesh.Submeshes.Count; partNum++)
+				for (int partNum = 0; partNum < mesh.MeshParts.Count; partNum++)
 				{
-					var part = mesh.Submeshes[partNum];
+					var part = mesh.MeshParts[partNum];
 					// Render just the vertices, do not use the shaders of our model.
 					// This is the same code as ModelMeshPart.Draw() uses, but
 					// this method is internal and can't be used by us :(
-					BaseGame.Device.SetVertexBuffer(part.VertexBuffer);
-					BaseGame.Device.Indices = part.IndexBuffer;
-					BaseGame.Device.DrawIndexedPrimitives(
-						PrimitiveType.TriangleList,
-						part.StartVertex, 0,
-						part.VertexCount, part.StartIndex, part.PrimitiveCount);
+					part.Draw(BaseGame.Device);
 				}
 			}
 		}
@@ -779,18 +765,13 @@ namespace RacingGame.Graphics
 						renderMatrix);
 				}
 
-				for (int partNum = 0; partNum < mesh.Submeshes.Count; partNum++)
+				for (int partNum = 0; partNum < mesh.MeshParts.Count; partNum++)
 				{
-					var part = mesh.Submeshes[partNum];
+					var part = mesh.MeshParts[partNum];
 					// Render just the vertices, do not use the shaders of our model.
 					// This is the same code as ModelMeshPart.Draw() uses, but
 					// this method is internal and can't be used by us :(
-					BaseGame.Device.SetVertexBuffer(part.VertexBuffer);
-					BaseGame.Device.Indices = part.IndexBuffer;
-					BaseGame.Device.DrawIndexedPrimitives(
-						PrimitiveType.TriangleList,
-						part.StartVertex, 0,
-						part.VertexCount, part.StartIndex, part.PrimitiveCount);
+					part.Draw(BaseGame.Device);
 				}
 			}
 		}

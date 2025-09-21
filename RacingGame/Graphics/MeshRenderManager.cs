@@ -415,7 +415,7 @@ namespace RacingGame.Graphics
         /// <param name="effect">Effect</param>
         /// <returns>Renderable mesh</returns>
         public RenderableMesh Add(VertexBuffer vertexBuffer,
-            IndexBuffer indexBuffer, DrSubmesh part, Effect effect)
+            IndexBuffer indexBuffer, DrMeshPart part, Effect effect)
         {
             string techniqueName = effect.CurrentTechnique.Name;
 
@@ -471,7 +471,7 @@ namespace RacingGame.Graphics
             RenderableMesh mesh = new RenderableMesh(
                 vertexBuffer, indexBuffer, material, foundList.technique,
                 ShaderEffect.normalMapping.WorldParameter, part.StartVertex,
-                part.VertexCount, part.StartIndex, part.PrimitiveCount);
+                part.NumVertices, part.StartIndex, part.PrimitiveCount);
             foundList.Add(mesh);
             return mesh;
         }

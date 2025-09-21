@@ -16,22 +16,22 @@ namespace RacingGame.Utilities
 			return m / 2;
 		}
 
-		public static Effect GetEffect(this DrSubmesh submesh) => (Effect)submesh.UserData;
+		public static Effect GetEffect(this DrMeshPart meshpart) => (Effect)meshpart.Tag;
 
-		public static void SetEffect(this DrSubmesh submesh, Effect effect) => submesh.UserData = effect;
+		public static void SetEffect(this DrMeshPart meshpart, Effect effect) => meshpart.Tag = effect;
 
 		public static Effect[] GetEffects(this DrMesh mesh)
 		{
-			if (mesh.UserData != null)
+			if (mesh.Tag != null)
 			{
-				return (Effect[])mesh.UserData;
+				return (Effect[])mesh.Tag;
 			}
 
 			var result = new List<Effect>();
 
-			foreach (var submesh in mesh.Submeshes)
+			foreach (var meshpart in mesh.MeshParts)
 			{
-				var effect = submesh.GetEffect();
+				var effect = meshpart.GetEffect();
 				if (effect == null)
 				{
 					continue;
@@ -43,8 +43,8 @@ namespace RacingGame.Utilities
 				}
 			}
 
-			mesh.UserData = result.ToArray();
-			return (Effect[])mesh.UserData;
+			mesh.Tag = result.ToArray();
+			return (Effect[])mesh.Tag;
 		}
 
 		public static string GetBoneMeshName(this DrModelBone bone)
@@ -66,17 +66,17 @@ namespace RacingGame.Utilities
 		{
 			var graphicsDevice = BaseGame.Device;
 
-			for (int i = 0; i < mesh.Submeshes.Count; i++)
+			for (int i = 0; i < mesh.MeshParts.Count; i++)
 			{
-				var submesh = mesh.Submeshes[i];
-				if (submesh.PrimitiveCount > 0)
+				var meshpart = mesh.MeshParts[i];
+				if (meshpart.PrimitiveCount > 0)
 				{
-					var effect = submesh.GetEffect();
+					var effect = meshpart.GetEffect();
 					for (int j = 0; j < effect.CurrentTechnique.Passes.Count; j++)
 					{
 						effect.CurrentTechnique.Passes[j].Apply();
 
-						submesh.Draw(graphicsDevice);
+						meshpart.Draw(graphicsDevice);
 					}
 				}
 			}
