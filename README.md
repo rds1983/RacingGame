@@ -11,10 +11,13 @@ Open RacingGame.MonoGameDX.sln in the IDE and run.
 ## Building From Source Code for FNA
 
 Clone following repos in one folder:
-* [FNA](https://github.com/FNA-XNA/FNA)
-* [DdsKtxXna](https://github.com/rds1983/DdsKtxXna)
-* [XNAssets](https://github.com/rds1983/XNAssets)
-* This repo
+Link|Description
+----|-----------
+https://github.com/FNA-XNA/FNA|FNA
+https://github.com/rds1983/DdsKtxSharp|Loading textures in DDS format
+https://github.com/rds1983/XNAssets|Asset management library
+https://github.com/DigitalRiseEngine/DigitalRiseModel|3D model library
+this repo|
 
 Then simply open RacingGame.FNA.Core.sln in the IDE and run.
 
