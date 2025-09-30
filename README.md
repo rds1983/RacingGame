@@ -16,7 +16,7 @@ Link|Description
 https://github.com/FNA-XNA/FNA|FNA
 https://github.com/rds1983/DdsKtxSharp|Loading textures in DDS format
 https://github.com/rds1983/XNAssets|Asset management library
-https://github.com/DigitalRiseEngine/DigitalRiseModel|3D model library
+https://github.com/Nursia3D/NursiaModel|3D model library
 this repo|
 
 Then simply open RacingGame.FNA.Core.sln in the IDE and run.
