@@ -18,7 +18,7 @@ using RacingGame.Shaders;
 using RacingGame.Tracks;
 using XnaModel = Microsoft.Xna.Framework.Graphics.Model;
 using RacingGame;
-using DigitalRiseModel;
+using NursiaModel;
 using RacingGame.Utilities;
 #endregion
 
@@ -89,7 +89,7 @@ namespace RacingGame.Graphics
 		/// modelmesh here. Used for the windmill, which is rotated in
 		/// Render!
 		/// </summary>
-		DrMesh animatedMesh = null;
+		NrmMesh animatedMesh = null;
 
 		/// <summary>
 		/// Cached effect parameters to improve performance.
@@ -114,7 +114,7 @@ namespace RacingGame.Graphics
 		/// Renderable meshes dictionary. Used to render every RenderableMesh
 		/// in our render method.
 		/// </summary>
-		Dictionary<DrMeshPart, MeshRenderManager.RenderableMesh> renderableMeshes = new Dictionary<DrMeshPart, MeshRenderManager.RenderableMesh>();
+		Dictionary<NrmMeshPart, MeshRenderManager.RenderableMesh> renderableMeshes = new Dictionary<NrmMeshPart, MeshRenderManager.RenderableMesh>();
 		#endregion
 
 		#region Properties
@@ -163,9 +163,9 @@ namespace RacingGame.Graphics
 				model.CopyAbsoluteBoneTransformsTo(transforms);
 
 				// Calculate scaling for this object, used for distance comparisons.
-				if (model.MeshBones.Length > 0)
+				if (model.Meshes.Length > 0)
 					realScaling = scaling =
-						model.MeshBones[0].Mesh.BoundingBox.Radius() * transforms[0].Right.Length();
+						model.Meshes[0].BoundingBox.Radius() * transforms[0].Right.Length();
 
 				// For palms, laterns, holders and column holders reduce scaling
 				// to reduce the number of objects we have to render.
@@ -198,10 +198,9 @@ namespace RacingGame.Graphics
 			isCar = (name.ToLower() == "car");
 
 			// Go through all meshes in the model
-			for (int meshNum = 0; meshNum < model.MeshBones.Length; meshNum++)
+			for (int meshNum = 0; meshNum < model.Meshes.Length; meshNum++)
 			{
-				var bone = model.MeshBones[meshNum];
-				DrMesh mesh = model.MeshBones[meshNum].Mesh;
+				var mesh = model.Meshes[meshNum];
 				int meshPartNum = 0;
 				string meshName = mesh.Name;
 
@@ -296,7 +295,7 @@ namespace RacingGame.Graphics
 
 #if DEBUG
 			// Check if there are no meshes to render
-			if (model.MeshBones.Length == 0)
+			if (model.Meshes.Length == 0)
 				throw new ArgumentException("Invalid model " + name +
 					". It does not contain any meshes");
 #endif
@@ -400,11 +399,11 @@ namespace RacingGame.Graphics
 			renderMatrix = objectMatrix * renderMatrix;
 
 			// Go through all meshes in the model
-			for (int meshNum = 0; meshNum < model.MeshBones.Length; meshNum++)
+			for (int meshNum = 0; meshNum < model.Meshes.Length; meshNum++)
 			{
-				var bone = model.MeshBones[meshNum];
-				var mesh = bone.Mesh;
-
+				var mesh = model.Meshes[meshNum];
+				var bone = mesh.ParentBone;
+				
 				// Assign world matrix
 				Matrix worldMatrix = transforms[bone.Index] * renderMatrix;
 
@@ -476,10 +475,10 @@ namespace RacingGame.Graphics
 					{
 						int wheelNumber = 0;
 						// And just render all meshes with it!
-						for (int meshNum = 0; meshNum < model.MeshBones.Length; meshNum++)
+						for (int meshNum = 0; meshNum < model.Meshes.Length; meshNum++)
 						{
-							var bone = model.MeshBones[meshNum];
-							var mesh = bone.Mesh;
+							var mesh = model.Meshes[meshNum];
+							var bone = mesh.ParentBone;
 
 							Matrix meshMatrix = transforms[bone.Index];
 
@@ -531,10 +530,10 @@ namespace RacingGame.Graphics
 				int effectParameterIndex = 0;
 				int effectTechniqueIndex = 0;
 
-				for (int meshNum = 0; meshNum < model.MeshBones.Length; meshNum++)
+				for (int meshNum = 0; meshNum < model.Meshes.Length; meshNum++)
 				{
-					var bone = model.MeshBones[meshNum];
-					var mesh = bone.Mesh;
+					var mesh = model.Meshes[meshNum];
+					var bone = mesh.ParentBone;
 					bool dontRender = false;
 
 					for (int effectNum = 0; effectNum < mesh.GetEffects().Length; effectNum++)
@@ -674,10 +673,10 @@ namespace RacingGame.Graphics
 			// Multiply object matrix by render matrix.
 			renderMatrix = objectMatrix * renderMatrix;
 
-			for (int meshNum = 0; meshNum < model.MeshBones.Length; meshNum++)
+			for (int meshNum = 0; meshNum < model.Meshes.Length; meshNum++)
 			{
-				var bone = model.MeshBones[meshNum];
-				var mesh = bone.Mesh;
+				var mesh = model.Meshes[meshNum];
+				var bone = mesh.ParentBone;
 
 				// Use the ShadowMapShader helper method to set the world matrices
 				ShaderEffect.shadowMapping.UpdateGenerateShadowWorldMatrix(
@@ -742,10 +741,11 @@ namespace RacingGame.Graphics
 			// Multiply object matrix by render matrix.
 			renderMatrix = objectMatrix * renderMatrix;
 
-			for (int meshNum = 0; meshNum < model.MeshBones.Length; meshNum++)
+			for (int meshNum = 0; meshNum < model.Meshes.Length; meshNum++)
 			{
-				var bone = model.MeshBones[meshNum];
-				var mesh = bone.Mesh;
+				var mesh = model.Meshes[meshNum];
+				var bone = mesh.ParentBone;
+
 				// Use the ShadowMapShader helper method to set the world matrices
 				ShaderEffect.shadowMapping.UpdateCalcShadowWorldMatrix(
 					transforms[bone.Index] *

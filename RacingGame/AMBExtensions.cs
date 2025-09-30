@@ -1,5 +1,5 @@
 ﻿using AssetManagementBase;
-using DigitalRiseModel;
+using NursiaModel;
 using Microsoft.Xna.Framework.Graphics;
 using RacingGame.Graphics;
 using RacingGame.Shaders;
@@ -34,10 +34,8 @@ namespace RacingGame
 			// Load model
 			var model = manager.LoadGltf(BaseGame.Device, assetName);
 			var result = new ModelInfo(model, materialInfo);
-			foreach (var meshBone in model.MeshBones)
+			foreach (var mesh in model.Meshes)
 			{
-				var mesh = meshBone.Mesh;
-
 				// Set effects
 				foreach(var meshpart in mesh.MeshParts)
 				{
@@ -55,7 +53,8 @@ namespace RacingGame
 				}
 
 				// Update mesh names
-				var name = meshBone.GetBoneMeshName();
+				var bone = mesh.ParentBone;
+				var name = bone.GetBoneMeshName();
 				var effects = materialInfo.MeshesEffects[name];
 				for (var i = 0; i < Math.Min(mesh.MeshParts.Count, effects.Length); ++i)
 				{

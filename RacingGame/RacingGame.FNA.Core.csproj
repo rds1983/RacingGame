@@ -10,9 +10,8 @@
     <OutputType>Exe</OutputType>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\DigitalRiseModel\Source\DigitalRiseModel.Gltf\DigitalRiseModel.Gltf.FNA.Core.csproj" />
     <ProjectReference Include="..\..\FNA\FNA.Core.csproj" />
-    <ProjectReference Include="..\..\XNAssets\src\XNAssets.FNA.Core.csproj" />
+    <ProjectReference Include="..\..\NursiaModel\Source\NursiaModel.FNA.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

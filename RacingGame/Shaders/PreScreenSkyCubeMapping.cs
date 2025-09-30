@@ -21,7 +21,7 @@ using RacingGame.GameScreens;
 using XnaModel = Microsoft.Xna.Framework.Graphics.Model;
 using RacingGame;
 using AssetManagementBase;
-using DigitalRiseModel;
+using NursiaModel;
 #endregion
 
 namespace RacingGame.Shaders
@@ -64,7 +64,7 @@ namespace RacingGame.Shaders
             }
         }
 
-        private DrModel cube;
+        private NrmModel cube;
         #endregion
 
         #region Constructor
@@ -123,7 +123,7 @@ namespace RacingGame.Shaders
             foreach (var pass in effect.CurrentTechnique.Passes)
             {
                 pass.Apply();
-                cube.MeshBones[0].Mesh.MeshParts[0].Draw(BaseGame.Device);
+                cube.Meshes[0].MeshParts[0].Draw(BaseGame.Device);
             }
 
             // Reset previous render states
