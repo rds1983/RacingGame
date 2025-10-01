@@ -18,7 +18,7 @@ using RacingGame.Shaders;
 using RacingGame.Tracks;
 using XnaModel = Microsoft.Xna.Framework.Graphics.Model;
 using RacingGame;
-using NursiaModel;
+using DigitalRiseModel;
 using RacingGame.Utilities;
 #endregion
 
@@ -89,7 +89,7 @@ namespace RacingGame.Graphics
 		/// modelmesh here. Used for the windmill, which is rotated in
 		/// Render!
 		/// </summary>
-		NrmMesh animatedMesh = null;
+		DrMesh animatedMesh = null;
 
 		/// <summary>
 		/// Cached effect parameters to improve performance.
@@ -114,7 +114,7 @@ namespace RacingGame.Graphics
 		/// Renderable meshes dictionary. Used to render every RenderableMesh
 		/// in our render method.
 		/// </summary>
-		Dictionary<NrmMeshPart, MeshRenderManager.RenderableMesh> renderableMeshes = new Dictionary<NrmMeshPart, MeshRenderManager.RenderableMesh>();
+		Dictionary<DrMeshPart, MeshRenderManager.RenderableMesh> renderableMeshes = new Dictionary<DrMeshPart, MeshRenderManager.RenderableMesh>();
 		#endregion
 
 		#region Properties

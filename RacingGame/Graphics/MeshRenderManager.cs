@@ -17,7 +17,7 @@ using RacingGame.GameLogic;
 using RacingGame.Helpers;
 using RacingGame.Shaders;
 using RacingGame.Tracks;
-using NursiaModel;
+using DigitalRiseModel;
 #endregion
 
 namespace RacingGame.Graphics
@@ -415,7 +415,7 @@ namespace RacingGame.Graphics
         /// <param name="effect">Effect</param>
         /// <returns>Renderable mesh</returns>
         public RenderableMesh Add(VertexBuffer vertexBuffer,
-            IndexBuffer indexBuffer, NrmMeshPart part, Effect effect)
+            IndexBuffer indexBuffer, DrMeshPart part, Effect effect)
         {
             string techniqueName = effect.CurrentTechnique.Name;
 

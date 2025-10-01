@@ -261,6 +261,6 @@ __pycache__/
 *.pyc
 
 # Compiled effects
-Nursia/EffectsSource/FNA/
-Nursia/EffectsSource/MonoGameDX11/
-Nursia/EffectsSource/MonoGameOGL/
+DigitalRise/EffectsSource/FNA/
+DigitalRise/EffectsSource/MonoGameDX11/
+DigitalRise/EffectsSource/MonoGameOGL/

@@ -21,7 +21,7 @@ using RacingGame.GameScreens;
 using XnaModel = Microsoft.Xna.Framework.Graphics.Model;
 using RacingGame;
 using AssetManagementBase;
-using NursiaModel;
+using DigitalRiseModel;
 #endregion
 
 namespace RacingGame.Shaders
@@ -64,7 +64,7 @@ namespace RacingGame.Shaders
             }
         }
 
-        private NrmModel cube;
+        private DrModel cube;
         #endregion
 
         #region Constructor

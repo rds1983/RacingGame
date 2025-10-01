@@ -1,4 +1,4 @@
-﻿using NursiaModel;
+﻿using DigitalRiseModel;
 using Microsoft.Xna.Framework;
 using System;
 
@@ -6,13 +6,13 @@ namespace RacingGame
 {
 	public class ModelInfo
 	{
-		public NrmModel Model { get; }
+		public DrModel Model { get; }
 		public MaterialInfo Material { get; }
 
-		public NrmModelBone[] Bones => Model.Bones;
-		public NrmMesh[] Meshes => Model.Meshes;
+		public DrModelBone[] Bones => Model.Bones;
+		public DrMesh[] Meshes => Model.Meshes;
 
-		public ModelInfo(NrmModel model, MaterialInfo material)
+		public ModelInfo(DrModel model, MaterialInfo material)
 		{
 			Model = model ?? throw new ArgumentNullException(nameof(model));
 			Material = material ?? throw new ArgumentNullException(nameof(material));

@@ -1,4 +1,4 @@
-﻿using NursiaModel;
+﻿using DigitalRiseModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using RacingGame.Graphics;
@@ -16,11 +16,11 @@ namespace RacingGame.Utilities
 			return m / 2;
 		}
 
-		public static Effect GetEffect(this NrmMeshPart meshpart) => (Effect)meshpart.Tag;
+		public static Effect GetEffect(this DrMeshPart meshpart) => (Effect)meshpart.Tag;
 
-		public static void SetEffect(this NrmMeshPart meshpart, Effect effect) => meshpart.Tag = effect;
+		public static void SetEffect(this DrMeshPart meshpart, Effect effect) => meshpart.Tag = effect;
 
-		public static Effect[] GetEffects(this NrmMesh mesh)
+		public static Effect[] GetEffects(this DrMesh mesh)
 		{
 			if (mesh.Tag != null)
 			{
@@ -47,7 +47,7 @@ namespace RacingGame.Utilities
 			return (Effect[])mesh.Tag;
 		}
 
-		public static string GetBoneMeshName(this NrmModelBone bone)
+		public static string GetBoneMeshName(this DrModelBone bone)
 		{
 			if (bone.Mesh == null)
 			{
@@ -62,7 +62,7 @@ namespace RacingGame.Utilities
 			return bone.Name;
 		}
 
-		public static void Draw(this NrmMesh mesh)
+		public static void Draw(this DrMesh mesh)
 		{
 			var graphicsDevice = BaseGame.Device;
 
